@@ -1,6 +1,7 @@
-import kk.pivotcsv.Csv;
-import kk.pivotcsv.PageFilter;
-import kk.pivotcsv.PivotTable;
+import kk.pivotcsv.csv.Csv;
+import kk.pivotcsv.pivottable.Filter;
+import kk.pivotcsv.pivottable.PivotTable;
+import kk.pivotcsv.pivottable.aggregators.Sum;
 import lombok.SneakyThrows;
 
 import java.io.File;
@@ -14,7 +15,15 @@ public class Test {
         File file = new File(DATA_FOLDER, "test.csv");
         Csv csv = new Csv().load(file);
         PivotTable pivotCsv = new PivotTable(csv)
-                .withPageFilter(new PageFilter("rec_type", "ST", "OSDM"));
+                .withFilter(new Filter("rec_type", "ST", "OSDM"))
+                .withRowFields("tck_series", "tck_number", "op_day", "offer_code", "red_code", "base_price")
+                .withColumnFields("op_type", "rec_type")
+                .withDataFields(Sum.of("price"), Sum.of("vat"))
+                .calculate();
+
+
+
+
 
 
         System.out.println("");

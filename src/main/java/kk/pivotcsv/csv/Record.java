@@ -1,4 +1,4 @@
-package kk.pivotcsv;
+package kk.pivotcsv.csv;
 
 import java.util.HashMap;
 import java.util.List;
