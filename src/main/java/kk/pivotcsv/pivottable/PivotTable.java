@@ -1,10 +1,12 @@
 package kk.pivotcsv.pivottable;
 
-import kk.pivotcsv.pivottable.aggregators.Aggregator;
 import kk.pivotcsv.csv.Csv;
+import kk.pivotcsv.csv.Record;
+import kk.pivotcsv.pivottable.aggregators.Aggregator;
 import lombok.Data;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public class PivotTable {
@@ -16,7 +18,7 @@ public class PivotTable {
     private final Set<String> groupFields = new HashSet<>();
     private final List<Aggregator> dataFields = new ArrayList<>();
 
-
+    private List<Record> records;
 
     public PivotTable withFilter(Filter filter) {
         filters.add(filter);
@@ -47,7 +49,16 @@ public class PivotTable {
     }
 
     public PivotTable calculate() {
-
+        filterRecords();
         return this;
+    }
+
+    private void filterRecords() {
+        records = source.getRecords();
+        System.out.println("All Records: " + records.size());
+        for (Filter filter : filters) {
+            records = records.stream().filter(filter::match).collect(Collectors.toList());
+            System.out.println("Filter: " + filter.field + " => Records: " + records.size());
+        }
     }
 }

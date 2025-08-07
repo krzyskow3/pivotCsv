@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 public class Csv {
 
     private char separator = ';';
-    public final List<Header> headers = new ArrayList<>();
-    public final List<String> fields = new ArrayList<>();
-    public final List<Record> records = new ArrayList<>();
+    private final List<Header> headers = new ArrayList<>();
+    private final List<String> fields = new ArrayList<>();
+    private final List<Record> records = new ArrayList<>();
 
     public Csv(char separator) {
         this.separator = separator;
@@ -44,6 +44,10 @@ public class Csv {
             }
         }
         return this;
+    }
+
+    public List<Record> getRecords() {
+        return new ArrayList<>(records);
     }
 
     private List<String> splitLine(String line) {
