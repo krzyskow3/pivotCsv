@@ -1,0 +1,56 @@
+# Ignorowanie katalogu target (dla Maven/Gradle)
+**/target/
+**/output/
+
+# Ignorowanie plików IDE (IntelliJ IDEA, Eclipse, VSCode)
+*.iml
+*.ipr
+*.iws
+.idea/
+.project
+.classpath
+.settings/
+.vscode/
+
+# Ignorowanie plików kompilacji
+*.class
+*.jar
+*.war
+*.ear
+*.dll
+*.exe
+*.out
+*.log
+
+# Ignorowanie katalogu bin (dla Eclipse)
+**/bin/
+
+# Ignorowanie plików generowanych przez Gradle
+**/.gradle/
+**/build/
+
+# Ignorowanie zależności pobranych przez Maven
+**/dependency-reduced-pom.xml
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/release.properties
+**/target/
+
+# Ignorowanie logów
+*.log
+*.tmp
+
+# Ignorowanie plików tymczasowych systemu
+.DS_Store
+Thumbs.db
+*.swp
+~*
+
+# Ignorowanie zarchiwizowanych plików
+*.zip
+*.tar
+*.gz
+*.rar
+
+# Ignorowanie prywatnych plików konfiguracyjnych
+local.properties
