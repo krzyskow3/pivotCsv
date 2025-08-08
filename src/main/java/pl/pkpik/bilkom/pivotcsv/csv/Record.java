@@ -54,6 +54,14 @@ public class Record {
         map.putAll(valuesMap);
     }
 
+    public void setAllValues(List<String> fields, List<String> values) {
+        for (int i = 0; i < fields.size(); i++) {
+            if (i < values.size()) {
+                map.put(fields.get(i), values.get(i));
+            }
+        }
+    }
+
     public void setValue(String field, String value) {
         map.put(field, value);
     }

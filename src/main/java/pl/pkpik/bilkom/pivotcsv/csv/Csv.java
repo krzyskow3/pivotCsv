@@ -102,6 +102,22 @@ public class Csv {
         return merged;
     }
 
+    public void addFields(List<String> fields) {
+        this.fields.addAll(fields);
+    }
+
+    public void addField(String field) {
+        this.fields.add(field);
+    }
+
+    public void addRecord(Record record) {
+        this.records.add(record);
+    }
+
+    public void addHeader(Header header) {
+        this.headers.add(header);
+    }
+
     private static List<String> splitLine(String line, String separator) {
         return Arrays.stream(StringUtils.splitPreserveAllTokens(line, separator)).collect(Collectors.toList());
     }

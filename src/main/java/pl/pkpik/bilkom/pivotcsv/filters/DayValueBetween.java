@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import pl.pkpik.bilkom.pivotcsv.csv.Record;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class DayValueBetween implements Filter {
 
@@ -20,6 +21,16 @@ public class DayValueBetween implements Filter {
     public boolean match(Record rec) {
         LocalDate day = rec.getLocalDateValue(field);
         return (day != null && !day.isBefore(fromDay) && !day.isAfter(toDay));
+    }
+
+    @Override
+    public String getField() {
+        return field;
+    }
+
+    @Override
+    public List<String> getValues() {
+        return List.of(fromDay.toString(), toDay.toString());
     }
 
     @Override
