@@ -1,4 +1,4 @@
-package kk.pivotcsv.pivottable;
+package pl.pkpik.bilkom.pivotcsv.pivottable;
 
 import lombok.Data;
 

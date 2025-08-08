@@ -1,9 +1,10 @@
-package kk.pivotcsv.pivottable;
+package pl.pkpik.bilkom.pivotcsv.pivottable;
 
-import kk.pivotcsv.csv.Csv;
-import kk.pivotcsv.csv.Record;
-import kk.pivotcsv.pivottable.aggregators.Aggregator;
+import pl.pkpik.bilkom.pivotcsv.csv.Csv;
+import pl.pkpik.bilkom.pivotcsv.csv.Record;
+import pl.pkpik.bilkom.pivotcsv.aggregators.Aggregator;
 import lombok.Data;
+import pl.pkpik.bilkom.pivotcsv.filters.Filter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -58,7 +59,7 @@ public class PivotTable {
         System.out.println("All Records: " + records.size());
         for (Filter filter : filters) {
             records = records.stream().filter(filter::match).collect(Collectors.toList());
-            System.out.println("Filter: " + filter.field + " => Records: " + records.size());
+            System.out.println(filter + " => Records: " + records.size());
         }
     }
 }

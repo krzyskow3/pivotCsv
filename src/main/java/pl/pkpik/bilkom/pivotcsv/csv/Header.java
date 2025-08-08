@@ -1,6 +1,7 @@
-package kk.pivotcsv.csv;
+package pl.pkpik.bilkom.pivotcsv.csv;
 
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,5 +15,9 @@ public class Header {
         Header header = new Header();
         header.values.addAll(values);
         return header;
+    }
+
+    public String toCsv(String separator) {
+        return StringUtils.join(values, separator);
     }
 }

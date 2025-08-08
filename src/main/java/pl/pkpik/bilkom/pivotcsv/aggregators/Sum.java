@@ -1,4 +1,4 @@
-package kk.pivotcsv.pivottable.aggregators;
+package pl.pkpik.bilkom.pivotcsv.aggregators;
 
 import lombok.Data;
 
