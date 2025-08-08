@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class Csv {
 
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private static final String DEFAULT_SEPARATOR = ";";
     private static final String DEFAULT_HEADER_PREFIX = "#";
@@ -31,10 +31,10 @@ public class Csv {
         return csv;
     }
 
-    public static Csv create(List<Map<String, Object>> map) {
+    public static Csv create(List<Map<String, Object>> data) {
         Set<String> fields = new HashSet<>();
         List<Record> records = new ArrayList<>();
-        for (Map<String, Object> rec : map) {
+        for (Map<String, Object> rec : data) {
             fields.addAll(rec.keySet());
             records.add(Record.create(rec));
         }

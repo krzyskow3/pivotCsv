@@ -14,10 +14,16 @@ import java.util.stream.Collectors;
 @Data
 public class Projection {
 
+    // List of projection fields
     private final List<String> fields = new ArrayList<>();
 
+    // Map: projection field => default value
     private final Map<String, String> addFields = new HashMap<>();
+
+    // Map: source field => projection field
     private final Map<String, String> mapFields = new HashMap<>();
+
+    // List of projection field filters
     private final List<Filter> filters = new ArrayList<>();
 
     public Projection addField(@NotNull String field, String defValue) {
@@ -32,9 +38,9 @@ public class Projection {
         return this;
     }
 
-    public Projection mapField(@NotNull String field, @NotNull String alias) {
-        fields.add(alias);
-        mapFields.put(field, alias);
+    public Projection mapField(@NotNull String field, @NotNull String srcField) {
+        fields.add(field);
+        mapFields.put(srcField, field);
         return this;
     }
 
@@ -53,10 +59,10 @@ public class Projection {
     private Record convert(Record rec) {
         Record record = new Record();
         record.setAllValues(addFields);
-        for (String field : mapFields.keySet()) {
-            String value = rec.getValue(field);
-            String alias = mapFields.get(field);
-            record.setValue(alias, value);
+        for (String srcField : mapFields.keySet()) {
+            String value = rec.getValue(srcField);
+            String field = mapFields.get(srcField);
+            record.setValue(field, value);
         }
         return record;
     }
