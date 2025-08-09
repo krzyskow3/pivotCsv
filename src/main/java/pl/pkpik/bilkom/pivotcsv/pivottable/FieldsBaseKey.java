@@ -30,8 +30,8 @@ public abstract class FieldsBaseKey implements Comparable<FieldsBaseKey> {
         return new ArrayList<>(values);
     }
 
-    public String name() {
-        return StringUtils.join(values, '_');
+    public String fieldNameSuffix() {
+        return (values.isEmpty()) ? "" : ("_" + StringUtils.join(values, '_'));
     }
 
     @Override

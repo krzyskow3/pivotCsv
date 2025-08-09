@@ -28,11 +28,10 @@ public class Test {
         Test test = new Test();
         Csv csv = new PivotTable(test.loadData())
                 .withFilter(new ValueIn("rec_type", "SR", "ST"))
-                .withRowFields("tck_series","tck_number","op_day","offer_code","red_code","base_price")
-                .withColumnFields("op_type","rec_type")
+                .withRowFields("tck_series","tck_number","op_type","op_day","offer_code","red_code","base_price")
+                .withColumnFields("rec_type")
                 .withDataFields(Sum.of("price"), Sum.of("vat"), Sum.of("compens"))
-                .build()
-                .save(new File(OUT_FOLDER, "pivot.csv"));
+                .build().asCsv().save(new File(OUT_FOLDER, "pivot.csv"));
         System.out.println(csv.size());
     }
 

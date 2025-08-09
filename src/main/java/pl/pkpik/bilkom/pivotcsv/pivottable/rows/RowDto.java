@@ -21,4 +21,10 @@ public class RowDto {
     public Set<ColumnKey> getColumnKeys() {
         return new HashSet<>(columns.keySet());
     }
+
+    public List<Record> getRecords(ColumnKey columnKey) {
+        return Optional.ofNullable(columns.get(columnKey))
+                .map(ColumnDto::getRecords)
+                .orElse(new ArrayList<>());
+    }
 }

@@ -7,6 +7,7 @@ import pl.pkpik.bilkom.pivotcsv.csv.Record;
 import pl.pkpik.bilkom.pivotcsv.filters.Filter;
 import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Aggregator;
 import pl.pkpik.bilkom.pivotcsv.pivottable.columns.ColumnKey;
+import pl.pkpik.bilkom.pivotcsv.pivottable.columns.DataColumnDto;
 import pl.pkpik.bilkom.pivotcsv.pivottable.rows.RowDto;
 import pl.pkpik.bilkom.pivotcsv.pivottable.rows.RowKey;
 
@@ -22,6 +23,7 @@ public class PivotTable {
     private final List<String> columnFields = new ArrayList<>();
     private final Set<String> groupFields = new HashSet<>();
     private final List<Aggregator> dataFields = new ArrayList<>();
+    private final List<DataColumnDto> dataColumns = new ArrayList<>();
 
     private final Map<RowKey, RowDto> rows = new HashMap<>();
     private final List<RowKey> rowKeys = new ArrayList<>();
@@ -55,10 +57,19 @@ public class PivotTable {
         return this;
     }
 
-    public Csv build() {
+    public PivotTable build() {
         List<Record> records = filterRecords();
         groupRecords(records);
-        return makeCsv();
+        makeDataColumns();
+        return this;
+    }
+
+    public Csv asCsv() {
+        Csv csv = new Csv();
+        makeCsvHeaders(csv);
+        makeCsvFields(csv);
+        makeCsvRecords(csv);
+        return csv;
     }
 
     private List<Record> filterRecords() {
@@ -84,12 +95,12 @@ public class PivotTable {
                 .toList());
     }
 
-    private Csv makeCsv() {
-        Csv csv = new Csv();
-        makeCsvHeaders(csv);
-        makeCsvFields(csv);
-        makeCsvRecords(csv);
-        return csv;
+    private void makeDataColumns() {
+        for (Aggregator aggregator : dataFields) {
+            for (ColumnKey columnKey : columnKeys) {
+                dataColumns.add(new DataColumnDto(aggregator, columnKey));
+            }
+        }
     }
 
     private void makeCsvHeaders(Csv csv) {
@@ -108,22 +119,22 @@ public class PivotTable {
     private void makeCsvFields(Csv csv) {
         csv.addField("row");
         csv.addFields(rowFields);
-        for (Aggregator aggregator : dataFields) {
-            for (ColumnKey columnKey : columnKeys) {
-                csv.addField(aggregator.name() + "_" + columnKey.name());
-            }
-        }
+        csv.addFields(dataColumns.stream().map(DataColumnDto::getFieldName).toList());
     }
 
     private void makeCsvRecords(Csv csv) {
         for (int i = 0; i < rowKeys.size(); i++) {
             RowKey rowKey = rowKeys.get(i);
+            RowDto rowDto = rows.get(rowKey);
             Record record = new Record();
             record.setValue("row", Integer.toString(i + 1));
             record.setAllValues(rowFields, rowKey.getValues());
+            for (DataColumnDto dto : dataColumns) {
+                List<Record> dataRecords = rowDto.getRecords(dto.columnKey);
+                String value = dto.aggregator.aggregate(dataRecords);
+                record.setValue(dto.fieldName, value);
+            }
             csv.addRecord(record);
-
-
         }
     }
 }
