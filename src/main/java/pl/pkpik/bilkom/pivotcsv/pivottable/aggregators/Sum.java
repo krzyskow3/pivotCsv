@@ -1,6 +1,7 @@
 package pl.pkpik.bilkom.pivotcsv.pivottable.aggregators;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import pl.pkpik.bilkom.pivotcsv.pivottable.base.BaseAggregator;
 
 import java.util.List;
 

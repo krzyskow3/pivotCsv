@@ -1,10 +1,11 @@
-package pl.pkpik.bilkom.pivotcsv.pivottable.aggregators;
+package pl.pkpik.bilkom.pivotcsv.pivottable.base;
 
 import pl.pkpik.bilkom.pivotcsv.csv.Record;
+import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Aggregator;
 
 import java.util.List;
 
-abstract class BaseAggregator implements Aggregator {
+public abstract class BaseAggregator implements Aggregator {
 
     protected final String field;
 

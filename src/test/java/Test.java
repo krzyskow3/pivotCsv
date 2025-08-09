@@ -3,7 +3,7 @@ import org.apache.commons.io.FileUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.Csv;
 import pl.pkpik.bilkom.pivotcsv.filters.DayValueBetween;
 import pl.pkpik.bilkom.pivotcsv.filters.ValueIn;
-import pl.pkpik.bilkom.pivotcsv.pivottable.PivotTable;
+import pl.pkpik.bilkom.pivotcsv.pivottable.PivotTableBuilder;
 import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Sum;
 import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 
@@ -26,12 +26,13 @@ public class Test {
     @SneakyThrows
     public static void main(String[] args) {
         Test test = new Test();
-        Csv csv = new PivotTable(test.loadData())
+        Csv csv = new PivotTableBuilder(test.loadData())
                 .withFilter(new ValueIn("rec_type", "SR", "ST"))
                 .withRowFields("tck_series","tck_number","op_type","op_day","offer_code","red_code","base_price")
                 .withColumnFields("rec_type")
                 .withDataFields(Sum.of("price"), Sum.of("vat"), Sum.of("compens"))
-                .build().asCsv().save(new File(OUT_FOLDER, "pivot.csv"));
+                .build()
+                .asCsv().save(new File(OUT_FOLDER, "pivot.csv"));
         System.out.println(csv.size());
     }
 
