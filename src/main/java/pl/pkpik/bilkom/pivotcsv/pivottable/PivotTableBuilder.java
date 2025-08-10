@@ -47,6 +47,12 @@ public class PivotTableBuilder {
         return this;
     }
 
+    public PivotTableBuilder withRowSummary() {
+        table.setRowSummary(true);
+        return this;
+    }
+
+
     public PivotTable build() {
         new PivotTableCalculator(table).calculate();
         return table;

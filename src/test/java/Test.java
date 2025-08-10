@@ -31,6 +31,7 @@ public class Test {
                 .withRowFields("tck_series","tck_number","op_type","op_day","offer_code","red_code","base_price")
                 .withColumnFields("rec_type")
                 .withDataFields(Sum.of("price"), Sum.of("vat"), Sum.of("compens"))
+                .withRowSummary()
                 .build()
                 .asCsv().save(new File(OUT_FOLDER, "pivot.csv"));
         System.out.println(csv.size());

@@ -15,7 +15,7 @@ public class Record {
 
     private final HashMap<String, String> map = new HashMap<>();
 
-    private static final String NULL_TAG = "<NULL>";
+    public static final String NULL_TAG = "<NULL>";
 
     public static Record create(List<String> fields, List<String> values) {
         Record record = new Record();
@@ -39,6 +39,12 @@ public class Record {
         return Record.create(fields, values);
     }
 
+    public Record copy() {
+        Record record = new Record();
+        record.map.putAll(map);
+        return record;
+    }
+
     public String toCsv(List<String> fields, String separator) {
         return fields.stream()
                 .map(this::getValue)
@@ -50,20 +56,27 @@ public class Record {
         return value == null ? NULL_TAG : value;
     }
 
-    public void setAllValues(Map<String, String> valuesMap) {
+    public Record setAllValues(Map<String, String> valuesMap) {
         map.putAll(valuesMap);
+        return this;
     }
 
-    public void setAllValues(List<String> fields, List<String> values) {
+    public Record setAllValues(List<String> fields, List<String> values) {
         for (int i = 0; i < fields.size(); i++) {
             if (i < values.size()) {
                 map.put(fields.get(i), values.get(i));
             }
         }
+        return this;
     }
 
-    public void setValue(String field, String value) {
+    public Record setValue(String field, String value) {
         map.put(field, value);
+        return this;
+    }
+
+    public boolean hasField(String field) {
+        return map.containsKey(field);
     }
 
     public LocalDate getLocalDateValue(String field) {

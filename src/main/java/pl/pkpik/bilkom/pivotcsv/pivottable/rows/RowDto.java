@@ -10,11 +10,11 @@ import java.util.*;
 @Data
 public class RowDto {
 
-    private final List<Record> records = new ArrayList<>();
+    private final RowKey rowKey;
     private final Map<ColumnKey, ColumnDto> columns = new HashMap<>();
+    private final Record roeRecord = new Record();
 
     public void groupRecord(Record record, List<String> columnFields) {
-        records.add(record);
         ColumnKey columnKey = new ColumnKey(record, columnFields);
         ColumnDto columnDto = columns.computeIfAbsent(columnKey, k -> new ColumnDto());
         columnDto.addRecord(record);

@@ -39,7 +39,7 @@ class PivotTableCalculator {
     private void groupRecords() {
         for (Record record : records) {
             RowKey rowKey = new RowKey(record, table.rowFields);
-            RowDto rowDto = table.rows.computeIfAbsent(rowKey, k -> new RowDto());
+            RowDto rowDto = table.rows.computeIfAbsent(rowKey, k -> new RowDto(rowKey));
             rowDto.groupRecord(record, table.columnFields);
         }
     }
@@ -59,5 +59,7 @@ class PivotTableCalculator {
             }
         }
     }
+
+
 
 }

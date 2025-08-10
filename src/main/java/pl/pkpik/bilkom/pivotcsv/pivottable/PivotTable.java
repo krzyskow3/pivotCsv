@@ -22,11 +22,14 @@ public class PivotTable {
     final List<String> rowFields = new ArrayList<>();
     final List<String> columnFields = new ArrayList<>();
     final List<Aggregator> dataFields = new ArrayList<>();
+    private boolean rowSummary;
+
 
     final Map<RowKey, RowDto> rows = new HashMap<>();
     final List<RowKey> rowKeys = new ArrayList<>();
     final List<ColumnKey> columnKeys = new ArrayList<>();
     final List<DataColumnDto> dataColumns = new ArrayList<>();
+
 
 
     public Csv asCsv() {
