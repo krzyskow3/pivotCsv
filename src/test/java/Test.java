@@ -1,8 +1,6 @@
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.Csv;
-import pl.pkpik.bilkom.pivotcsv.filters.DayValueBetween;
-import pl.pkpik.bilkom.pivotcsv.filters.ValueIn;
 import pl.pkpik.bilkom.pivotcsv.pivottable.PivotTableBuilder;
 import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Sum;
 import pl.pkpik.bilkom.pivotcsv.projection.Projection;
@@ -17,6 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static pl.pkpik.bilkom.pivotcsv.csv.Csv.GSON;
+import static pl.pkpik.bilkom.pivotcsv.filters.FFilter.field;
 
 public class Test {
 
@@ -27,7 +26,7 @@ public class Test {
     public static void main(String[] args) {
         Test test = new Test();
         Csv csv = new PivotTableBuilder(test.loadData())
-                .withFilter(new ValueIn("rec_type", "SR", "ST"))
+                .withFilter(field("rec_type").in("SR", "ST"))
                 .withRowFields("tck_series","tck_number","op_type","op_day","offer_code","red_code","base_price")
                 .withColumnFields("rec_type")
                 .withDataFields(Sum.of("price"), Sum.of("vat"), Sum.of("compens"))
@@ -72,7 +71,7 @@ public class Test {
                         .mapField("red_code")
                         .mapField("red_value")
                         .mapField("red_perc")
-                        .addFilter(new DayValueBetween("op_day", fromDay, toDay)))
+                        .addFilter(field("op_day").between(fromDay, toDay)))
                 .save(new File(OUT_FOLDER, "out_sale_osdm.csv"));
         System.out.println("Load saleOsdm: " + csv.size());
         return csv;
@@ -97,7 +96,7 @@ public class Test {
                         .mapField("red_code")
                         .mapField("red_value")
                         .mapField("red_perc")
-                        .addFilter(new DayValueBetween("op_day", fromDay, toDay)))
+                        .addFilter(field("op_day").between(fromDay, toDay)))
                 .save(new File(OUT_FOLDER, "out_return_osdm.csv"));
         System.out.println("Load returnOsdm: " + csv.size());
         return csv;
@@ -123,7 +122,7 @@ public class Test {
                         .mapField("red_code")
                         .mapField("red_value")
                         .mapField("red_perc")
-                        .addFilter(new DayValueBetween("op_day", fromDay, toDay)))
+                        .addFilter(field("op_day").between(fromDay, toDay)))
                 .save(new File(OUT_FOLDER, "out_sale_records.scv"));
         System.out.println("Load saleRecords: " + csv.size());
         return csv;
@@ -149,7 +148,7 @@ public class Test {
                         .mapField("red_code")
                         .mapField("red_value")
                         .mapField("red_perc")
-                        .addFilter(new DayValueBetween("op_day", fromDay, toDay)))
+                        .addFilter(field("op_day").between(fromDay, toDay)))
                 .save(new File(OUT_FOLDER, "out_sale_temporary.scv"));
         System.out.println("Load saleTemporary: " + csv.size());
         return csv;

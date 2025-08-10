@@ -3,10 +3,9 @@ package pl.pkpik.bilkom.pivotcsv.functions;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.Record;
-import pl.pkpik.bilkom.pivotcsv.functions.impl.FAdd;
-import pl.pkpik.bilkom.pivotcsv.functions.impl.FField;
-import pl.pkpik.bilkom.pivotcsv.functions.impl.FMultiply;
+import pl.pkpik.bilkom.pivotcsv.functions.impl.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -18,7 +17,7 @@ public abstract class BaseFunction implements Function {
     protected BaseFunction next;
 
     public static BaseFunction field(String field) {
-        return new FField(field);
+        return new FnField(field);
     }
 
     public BaseFunction root() {
@@ -27,7 +26,7 @@ public abstract class BaseFunction implements Function {
 
     public BaseFunction multiply(BaseFunction arg) {
         BaseFunction argRoot = arg.root();
-        next = new FMultiply(argRoot);
+        next = new FnMultiply(argRoot);
         argRoot.parent = next;
         next.parent = this;
         return next;
@@ -35,19 +34,30 @@ public abstract class BaseFunction implements Function {
 
     public BaseFunction add(BaseFunction arg) {
         BaseFunction argRoot = arg.root();
-        next = new FAdd(argRoot);
+        next = new FnAdd(argRoot);
         argRoot.parent = next;
         next.parent = this;
         return next;
     }
 
+    public BaseFunction in(String... values) {
+        next = new FnValueIn(values);
+        next.parent = this;
+        return next;
+    }
+
+    public Function between(LocalDate fromDay, LocalDate toDay) {
+        next = new FnDayBetween(fromDay, toDay);
+        next.parent = this;
+        return next;
+    }
+
+
     @Override
     public String getValue(Record record) {
-        System.out.println("=> getValue: " + getClassName());
         if (parent == null) {
             FResult result = new FResult();
             calculate(record, result);
-            System.out.println("=> result");
             return result.pop();
         } else {
             return root().getValue(record);
@@ -58,6 +68,7 @@ public abstract class BaseFunction implements Function {
         if (arg != null) {
             arg.calculate(record, result);
         }
+//        System.out.println("=> apply: " + getClassName());
         apply(record, result);
         if (next != null) {
             next.calculate(record, result);
@@ -88,4 +99,5 @@ public abstract class BaseFunction implements Function {
         String[] split = StringUtils.split(getClass().getName(), '.');
         return split[split.length - 1];
     }
+
 }

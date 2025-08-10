@@ -2,8 +2,6 @@ package pl.pkpik.bilkom.pivotcsv.csv;
 
 import lombok.Data;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,11 +77,4 @@ public class Record {
         return map.containsKey(field);
     }
 
-    public LocalDate getLocalDateValue(String field) {
-        try {
-            return LocalDate.parse(getValue(field));
-        } catch (DateTimeParseException e) {
-            return null;
-        }
-    }
 }

@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.pkpik.bilkom.pivotcsv.csv.Record;
 
+import java.time.LocalDate;
+
 import static pl.pkpik.bilkom.pivotcsv.functions.BaseFunction.field;
 
 class FunctionTest {
@@ -19,4 +21,27 @@ class FunctionTest {
         String result = f.getValue(rec);
         Assertions.assertEquals("26.0000", result);
     }
+
+    @Test
+    void testFieldIn() {
+        Record rec1 = new Record().setValue("rec_type", "abc");
+        Record rec2 = new Record().setValue("rec_type", "def");
+        Function f = field("rec_type").in("abc", "xyz");
+        Assertions.assertEquals("true", f.getValue(rec1));
+        Assertions.assertEquals("false", f.getValue(rec2));
+    }
+
+    @Test
+    void testFieldDayBetween() {
+        Record rec1 = new Record().setValue("op_day", "2025-06-06");
+        Record rec2 = new Record().setValue("op_day", "2025-08-08");
+        Record rec3 = new Record().setValue("op_day", "2025-08-28");
+        LocalDate fromDay = LocalDate.of(2025, 8, 1);
+        LocalDate toDay = LocalDate.of(2025, 8, 15);
+        Function f = field("op_day").between(fromDay, toDay);
+        Assertions.assertEquals("false", f.getValue(rec1));
+        Assertions.assertEquals("true", f.getValue(rec2));
+        Assertions.assertEquals("false", f.getValue(rec3));
+    }
+
 }
