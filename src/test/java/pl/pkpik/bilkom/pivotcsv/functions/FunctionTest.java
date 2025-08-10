@@ -6,7 +6,7 @@ import pl.pkpik.bilkom.pivotcsv.csv.Record;
 
 import java.time.LocalDate;
 
-import static pl.pkpik.bilkom.pivotcsv.functions.BaseFunction.field;
+import static pl.pkpik.bilkom.pivotcsv.functions.FunctionBuilder.field;
 
 class FunctionTest {
 

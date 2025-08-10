@@ -5,16 +5,16 @@ import pl.pkpik.bilkom.pivotcsv.filters.impl.FValueIn;
 
 import java.time.LocalDate;
 
-public class FFilter {
+public class FilterBuilder {
 
     private final String field;
 
-    private FFilter(String field) {
+    private FilterBuilder(String field) {
         this.field = field;
     }
 
-    public static FFilter field(String field) {
-        return new FFilter(field);
+    public static FilterBuilder field(String field) {
+        return new FilterBuilder(field);
     }
 
     public Filter in(String... values) {

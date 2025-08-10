@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static pl.pkpik.bilkom.pivotcsv.csv.Csv.GSON;
-import static pl.pkpik.bilkom.pivotcsv.filters.FFilter.field;
+import static pl.pkpik.bilkom.pivotcsv.filters.FilterBuilder.field;
 
 public class Test {
 

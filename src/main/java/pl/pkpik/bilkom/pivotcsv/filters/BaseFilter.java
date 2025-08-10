@@ -6,7 +6,7 @@ import pl.pkpik.bilkom.pivotcsv.functions.Function;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseFilter implements Filter {
+public abstract class BaseFilter implements Filter {
 
     protected final String field;
     protected List<String> values = new ArrayList<>();

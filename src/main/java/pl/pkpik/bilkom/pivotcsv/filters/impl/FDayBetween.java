@@ -3,10 +3,11 @@ package pl.pkpik.bilkom.pivotcsv.filters.impl;
 import org.jetbrains.annotations.NotNull;
 import pl.pkpik.bilkom.pivotcsv.filters.BaseFilter;
 import pl.pkpik.bilkom.pivotcsv.filters.Filter;
-import pl.pkpik.bilkom.pivotcsv.functions.BaseFunction;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static pl.pkpik.bilkom.pivotcsv.functions.FunctionBuilder.field;
 
 public class FDayBetween extends BaseFilter implements Filter {
 
@@ -16,7 +17,7 @@ public class FDayBetween extends BaseFilter implements Filter {
     public FDayBetween(@NotNull String field, @NotNull LocalDate fromDay, @NotNull LocalDate toDay) {
         super(field);
         this.values = List.of(fromDay.toString(), toDay.toString());
-        this.function = BaseFunction.field(field).between(fromDay, toDay);
+        this.function = field(field).between(fromDay, toDay);
         this.fromDay = fromDay;
         this.toDay = toDay;
     }

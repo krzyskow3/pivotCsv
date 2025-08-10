@@ -16,10 +16,6 @@ public abstract class BaseFunction implements Function {
     protected BaseFunction arg;
     protected BaseFunction next;
 
-    public static BaseFunction field(String field) {
-        return new FnField(field);
-    }
-
     public BaseFunction root() {
         return (parent == null) ? this : parent.root();
     }
