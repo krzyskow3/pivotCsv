@@ -5,22 +5,18 @@ import pl.pkpik.bilkom.pivotcsv.functions.BaseFunction;
 import pl.pkpik.bilkom.pivotcsv.functions.FnResult;
 import pl.pkpik.bilkom.pivotcsv.functions.params.Param;
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
+public class FnEquals extends BaseFunction {
 
-public class FnValueIn extends BaseFunction {
+    private String expected;
 
-    private Set<String> expected;
-
-    public FnValueIn(String[] values) {
-        this.expected = Arrays.stream(values).collect(Collectors.toSet());
+    public FnEquals(String value) {
+        this.expected = value;
     }
 
     @Override
     public void apply(Record record, FnResult result, Param[] params) {
         String actual = result.pop();
-        boolean match = expected.contains(actual);
+        boolean match = expected.equals(actual);
         result.push(Boolean.toString(match));
     }
 }

@@ -6,5 +6,7 @@ import pl.pkpik.bilkom.pivotcsv.functions.params.Param;
 public interface Function {
 
     String getValue(Record record, Param... params);
+    double getFloatValue(Record record, Param... params);
+    boolean getBooleanValue(Record record, Param... params);
 
 }

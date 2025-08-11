@@ -2,6 +2,7 @@ package pl.pkpik.bilkom.pivotcsv.functions;
 
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.Record;
 import pl.pkpik.bilkom.pivotcsv.functions.impl.*;
 import pl.pkpik.bilkom.pivotcsv.functions.params.Param;
@@ -9,10 +10,10 @@ import pl.pkpik.bilkom.pivotcsv.functions.params.Param;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import static pl.pkpik.bilkom.pivotcsv.functions.params.Params.getDecimals;
-
 @Data
 public abstract class BaseFunction implements Function {
+
+    public static final double EPSILON = 1e-6;
 
     private final UUID id = UUID.randomUUID();
     protected BaseFunction parent;
@@ -23,34 +24,34 @@ public abstract class BaseFunction implements Function {
         return (parent == null) ? this : parent.root();
     }
 
+    public BaseFunction link(BaseFunction parent) {
+        this.setParent(parent);
+        parent.setNext(this);
+        if (this.arg != null) {
+            this.arg.setParent(this);
+        }
+        return this;
+    }
+
     public BaseFunction multiply(BaseFunction arg) {
-        BaseFunction argRoot = arg.root();
-        next = new FnMultiply(argRoot);
-        argRoot.parent = next;
-        next.parent = this;
-        return next;
+        return new FnMultiply(arg.root()).link(this);
     }
 
     public BaseFunction add(BaseFunction arg) {
-        BaseFunction argRoot = arg.root();
-        next = new FnAdd(argRoot);
-        argRoot.parent = next;
-        next.parent = this;
-        return next;
+        return new FnAdd(arg.root()).link(this);
     }
 
     public BaseFunction in(String... values) {
-        next = new FnValueIn(values);
-        next.parent = this;
-        return next;
+        return new FnValueIn(values).link(this);
+    }
+
+    public BaseFunction in(double... values) {
+        return new FnFloatValueIn(values).link(this);
     }
 
     public Function between(LocalDate fromDay, LocalDate toDay) {
-        next = new FnDayBetween(fromDay, toDay);
-        next.parent = this;
-        return next;
+        return new FnDayBetween(fromDay, toDay).link(this);
     }
-
 
     @Override
     public String getValue(Record record, Param... params) {
@@ -61,6 +62,16 @@ public abstract class BaseFunction implements Function {
         } else {
             return root().getValue(record, params);
         }
+    }
+
+    @Override
+    public double getFloatValue(Record record, Param... params) {
+        return NumberUtils.toDouble(getValue(record, params));
+    }
+
+    @Override
+    public boolean getBooleanValue(Record record, Param... params) {
+        return "true".equalsIgnoreCase(getValue(record, params));
     }
 
     private void calculate(Record record, FnResult result, Param[] params) {

@@ -3,7 +3,6 @@ package pl.pkpik.bilkom.pivotcsv.functions;
 import org.junit.Assert;
 import org.junit.Test;
 import pl.pkpik.bilkom.pivotcsv.csv.Record;
-import pl.pkpik.bilkom.pivotcsv.functions.params.Params;
 
 import java.time.LocalDate;
 
@@ -19,8 +18,8 @@ public class FunctionTest {
                 .setValue("c", "4")
                 .setValue("d", "5");
         Function f = field("a").multiply(field("b")).add(field("c").multiply(field("d")));
-        String result = f.getValue(rec, Params.DECIMALS_0);
-        Assert.assertEquals("26", result);
+        double result = f.getFloatValue(rec);
+        Assert.assertEquals(26, result, 1e-6);
     }
 
     @Test
@@ -30,6 +29,19 @@ public class FunctionTest {
         Function f = field("rec_type").in("abc", "xyz");
         Assert.assertEquals("true", f.getValue(rec1));
         Assert.assertEquals("false", f.getValue(rec2));
+    }
+
+    @Test
+    public void testFloatFieldIn() {
+        Record rec1 = new Record().setValue("rec_type", "10");
+        Record rec2 = new Record().setValue("rec_type", "10.1");
+        Record rec3 = new Record().setValue("rec_type", "10.12");
+        Record rec4 = new Record().setValue("rec_type", "12.1");
+        Function f = field("rec_type").in(10.1, 12.1);
+        Assert.assertFalse(f.getBooleanValue(rec1));
+        Assert.assertTrue(f.getBooleanValue(rec2));
+        Assert.assertFalse(f.getBooleanValue(rec3));
+        Assert.assertTrue(f.getBooleanValue(rec4));
     }
 
     @Test
