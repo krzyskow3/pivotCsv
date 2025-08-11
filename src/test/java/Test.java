@@ -22,7 +22,7 @@ public class Test {
     public static void main(String[] args) {
         Test test = new Test();
         test.cmpStOsdm();
-//        test.cmpSrSt();
+        test.cmpSrSt();
     }
 
     private void cmpStOsdm() throws IOException {
@@ -33,7 +33,7 @@ public class Test {
                 .withDataFields(Sum.of("price"), Sum.of("vat"), Sum.of("compens"))
                 .withRowSummary()
                 .build()
-                .asCsv().save(new File(OUT_FOLDER, "pivot.csv"));
+                .asCsv().save(new File(OUT_FOLDER, "out_cmp_st_osdm.csv"));
     }
 
     private void cmpSrSt() throws IOException {
@@ -44,7 +44,7 @@ public class Test {
                 .withDataFields(Sum.of("price"), Sum.of("vat"), Sum.of("compens"))
                 .withRowSummary()
                 .build()
-                .asCsv().save(new File(OUT_FOLDER, "pivot.csv"));
+                .asCsv().save(new File(OUT_FOLDER, "out_cmp_sr_st.csv"));
     }
 
 
