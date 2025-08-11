@@ -4,9 +4,12 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.Record;
 import pl.pkpik.bilkom.pivotcsv.functions.impl.*;
+import pl.pkpik.bilkom.pivotcsv.functions.params.Param;
 
 import java.time.LocalDate;
 import java.util.UUID;
+
+import static pl.pkpik.bilkom.pivotcsv.functions.params.Params.getDecimals;
 
 @Data
 public abstract class BaseFunction implements Function {
@@ -50,28 +53,28 @@ public abstract class BaseFunction implements Function {
 
 
     @Override
-    public String getValue(Record record) {
+    public String getValue(Record record, Param... params) {
         if (parent == null) {
-            FResult result = new FResult();
-            calculate(record, result);
+            FnResult result = new FnResult();
+            calculate(record, result, params);
             return result.pop();
         } else {
-            return root().getValue(record);
+            return root().getValue(record, params);
         }
     }
 
-    private void calculate(Record record, FResult result) {
+    private void calculate(Record record, FnResult result, Param[] params) {
         if (arg != null) {
-            arg.calculate(record, result);
+            arg.calculate(record, result, params);
         }
 //        System.out.println("=> apply: " + getClassName());
-        apply(record, result);
+        apply(record, result, params);
         if (next != null) {
-            next.calculate(record, result);
+            next.calculate(record, result, params);
         }
     }
 
-    public abstract void apply(Record record, FResult result);
+    public abstract void apply(Record record, FnResult result, Param[] params);
 
     @Override
     public String toString() {
@@ -89,6 +92,11 @@ public abstract class BaseFunction implements Function {
         }
         info.append(" }");
         return info.toString();
+    }
+
+    public String formatValue(double value, int decimals) {
+        String format = "%." + decimals + "f";
+        return String.format(format, value).replace(",", ".");
     }
 
     private String getClassName() {

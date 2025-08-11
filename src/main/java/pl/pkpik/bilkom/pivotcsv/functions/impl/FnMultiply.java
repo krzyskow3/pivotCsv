@@ -3,7 +3,10 @@ package pl.pkpik.bilkom.pivotcsv.functions.impl;
 import org.apache.commons.lang3.math.NumberUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.Record;
 import pl.pkpik.bilkom.pivotcsv.functions.BaseFunction;
-import pl.pkpik.bilkom.pivotcsv.functions.FResult;
+import pl.pkpik.bilkom.pivotcsv.functions.FnResult;
+import pl.pkpik.bilkom.pivotcsv.functions.params.Param;
+
+import static pl.pkpik.bilkom.pivotcsv.functions.params.Params.getDecimals;
 
 public class FnMultiply extends BaseFunction {
 
@@ -12,10 +15,10 @@ public class FnMultiply extends BaseFunction {
     }
 
     @Override
-    public void apply(Record record, FResult result) {
+    public void apply(Record record, FnResult result, Param[] params) {
         double second = NumberUtils.toDouble(result.pop());
         double first = NumberUtils.toDouble(result.pop());
         double value = first * second;
-        result.push(String.format("%.4f", value));
+        result.push(formatValue(value, getDecimals(params)));
     }
 }

@@ -3,6 +3,7 @@ package pl.pkpik.bilkom.pivotcsv.functions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.pkpik.bilkom.pivotcsv.csv.Record;
+import pl.pkpik.bilkom.pivotcsv.functions.params.Params;
 
 import java.time.LocalDate;
 
@@ -18,8 +19,8 @@ class FunctionTest {
                 .setValue("c", "4")
                 .setValue("d", "5");
         Function f = field("a").multiply(field("b")).add( field("c").multiply(field("d")) );
-        String result = f.getValue(rec);
-        Assertions.assertEquals("26.0000", result);
+        String result = f.getValue(rec, Params.DECIMALS_0);
+        Assertions.assertEquals("26", result);
     }
 
     @Test
