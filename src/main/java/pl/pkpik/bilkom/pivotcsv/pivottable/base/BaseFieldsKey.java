@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public abstract class BaseFieldsKey implements Comparable<BaseFieldsKey> {
@@ -15,7 +16,9 @@ public abstract class BaseFieldsKey implements Comparable<BaseFieldsKey> {
     private final List<@NotNull String> values;
 
     public BaseFieldsKey(@NotNull Record record, @NotNull List<String> fields) {
-        this(fields.stream().map(record::getValue).toList());
+        this(fields.stream()
+                .map(record::getValue)
+                .collect(Collectors.toList()));
     }
 
     private BaseFieldsKey(List<@NotNull String> values) {
@@ -37,7 +40,8 @@ public abstract class BaseFieldsKey implements Comparable<BaseFieldsKey> {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj instanceof BaseFieldsKey other) {
+        if (obj instanceof BaseFieldsKey) {
+            BaseFieldsKey other = (BaseFieldsKey) obj;
             return (this.size() == other.size()) && IntStream.range(0, values.size())
                     .allMatch(i -> Objects.equals(this.values.get(i), other.values.get(i)));
         } else {

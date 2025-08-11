@@ -7,6 +7,7 @@ import pl.pkpik.bilkom.pivotcsv.pivottable.columns.ColumnKey;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class Header {
@@ -35,7 +36,9 @@ public class Header {
             header.values.add("");
         }
         header.values.add(field);
-        List<String> values = columnKeys.stream().map(key -> key.getValue(idx)).toList();
+        List<String> values = columnKeys.stream()
+                .map(key -> key.getValue(idx))
+                .collect(Collectors.toList());
         for (int i = 0; i < repeats; i++) {
             header.values.addAll(values);
         }

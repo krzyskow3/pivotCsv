@@ -9,6 +9,7 @@ import pl.pkpik.bilkom.pivotcsv.pivottable.rows.RowDto;
 import pl.pkpik.bilkom.pivotcsv.pivottable.rows.RowKey;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 class PivotTableCsvBuilder {
 
@@ -42,7 +43,7 @@ class PivotTableCsvBuilder {
     private void makeCsvFields(Csv csv) {
         csv.addField("row");
         csv.addFields(table.rowFields);
-        csv.addFields(table.dataColumns.stream().map(DataColumnDto::getFieldName).toList());
+        csv.addFields(table.dataColumns.stream().map(DataColumnDto::getFieldName).collect(Collectors.toList()));
     }
 
     private void makeCsvRecords(Csv csv) {

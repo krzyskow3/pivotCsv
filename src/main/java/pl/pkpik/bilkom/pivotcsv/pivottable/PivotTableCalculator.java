@@ -45,11 +45,11 @@ class PivotTableCalculator {
     }
 
     private void sortKeys() {
-        table.rowKeys.addAll(table.rows.keySet().stream().sorted().toList());
+        table.rowKeys.addAll(table.rows.keySet().stream().sorted().collect(Collectors.toList()));
         table.columnKeys.addAll(table.rows.values().stream()
                 .flatMap(row -> row.getColumnKeys().stream())
                 .collect(Collectors.toSet()).stream().sorted()
-                .toList());
+                .collect(Collectors.toList()));
     }
 
     private void prepareDataColumns() {

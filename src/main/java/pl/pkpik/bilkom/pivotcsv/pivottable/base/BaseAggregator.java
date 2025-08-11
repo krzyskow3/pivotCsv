@@ -4,6 +4,7 @@ import pl.pkpik.bilkom.pivotcsv.csv.Record;
 import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Aggregator;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class BaseAggregator implements Aggregator {
 
@@ -18,7 +19,7 @@ public abstract class BaseAggregator implements Aggregator {
         if (records.isEmpty()) {
             return "";
         }
-        return aggregateValues(records.stream().map(rec -> rec.getValue(field)).toList());
+        return aggregateValues(records.stream().map(rec -> rec.getValue(field)).collect(Collectors.toList()));
     }
 
     public String getField() {

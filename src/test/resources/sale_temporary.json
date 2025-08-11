@@ -4226,7 +4226,7 @@
     "id": "9497877",
     "op_type": "RET",
     "red_perc": "93",
-    "compens": "4",
+    "compens": "0",
     "op_day": "2025-07-08"
   },
   {
@@ -4460,7 +4460,7 @@
     "id": "9504923",
     "op_type": "RET",
     "red_perc": "37",
-    "compens": "247",
+    "compens": "0",
     "op_day": "2025-07-09"
   },
   {
@@ -4478,7 +4478,7 @@
     "id": "9504911",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "118",
+    "compens": "0",
     "op_day": "2025-07-09"
   },
   {
@@ -5126,7 +5126,7 @@
     "id": "9501135",
     "op_type": "RET",
     "red_perc": "51",
-    "compens": "414",
+    "compens": "0",
     "op_day": "2025-07-08"
   },
   {
@@ -5396,7 +5396,7 @@
     "id": "9597778",
     "op_type": "RET",
     "red_perc": "51",
-    "compens": "273",
+    "compens": "0",
     "op_day": "2025-07-18"
   },
   {
@@ -5432,7 +5432,7 @@
     "id": "9597793",
     "op_type": "RET",
     "red_perc": "51",
-    "compens": "273",
+    "compens": "0",
     "op_day": "2025-07-18"
   },
   {
@@ -6098,7 +6098,7 @@
     "id": "9515312",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "118",
+    "compens": "0",
     "op_day": "2025-07-10"
   },
   {
@@ -6134,7 +6134,7 @@
     "id": "9515232",
     "op_type": "RET",
     "red_perc": "37",
-    "compens": "247",
+    "compens": "0",
     "op_day": "2025-07-10"
   },
   {
@@ -8078,7 +8078,7 @@
     "id": "9567186",
     "op_type": "RET",
     "red_perc": "78",
-    "compens": "53",
+    "compens": "0",
     "op_day": "2025-07-15"
   },
   {
@@ -9482,7 +9482,7 @@
     "id": "9519917",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "297",
+    "compens": "0",
     "op_day": "2025-07-10"
   },
   {
@@ -9752,7 +9752,7 @@
     "id": "9520347",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "279",
+    "compens": "0",
     "op_day": "2025-07-10"
   },
   {
@@ -16268,7 +16268,7 @@
     "id": "9544935",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "300",
+    "compens": "0",
     "op_day": "2025-07-13"
   },
   {
@@ -19508,7 +19508,7 @@
     "id": "9599038",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "61",
+    "compens": "0",
     "op_day": "2025-07-19"
   },
   {
@@ -19562,7 +19562,7 @@
     "id": "9675089",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "61",
+    "compens": "0",
     "op_day": "2025-07-27"
   },
   {
@@ -20444,7 +20444,7 @@
     "id": "9687388",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "79",
+    "compens": "0",
     "op_day": "2025-07-28"
   },
   {
@@ -21938,7 +21938,7 @@
     "id": "9570396",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "118",
+    "compens": "0",
     "op_day": "2025-07-16"
   },
   {
@@ -23666,7 +23666,7 @@
     "id": "9615683",
     "op_type": "RET",
     "red_perc": "37",
-    "compens": "139",
+    "compens": "0",
     "op_day": "2025-07-20"
   },
   {
@@ -27788,7 +27788,7 @@
     "id": "9620804",
     "op_type": "RET",
     "red_perc": "37",
-    "compens": "145",
+    "compens": "0",
     "op_day": "2025-07-21"
   },
   {
@@ -31154,7 +31154,7 @@
     "id": "9686072",
     "op_type": "RET",
     "red_perc": "37",
-    "compens": "50",
+    "compens": "0",
     "op_day": "2025-07-28"
   },
   {
@@ -32396,7 +32396,7 @@
     "id": "9616557",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "405",
+    "compens": "0",
     "op_day": "2025-07-20"
   },
   {
@@ -33152,7 +33152,7 @@
     "id": "9637977",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "61",
+    "compens": "0",
     "op_day": "2025-07-23"
   },
   {
@@ -33620,7 +33620,7 @@
     "id": "9653600",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "387",
+    "compens": "0",
     "op_day": "2025-07-24"
   },
   {
@@ -33638,7 +33638,7 @@
     "id": "9751588",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "272",
+    "compens": "0",
     "op_day": "2025-07-24"
   },
   {
@@ -34016,7 +34016,7 @@
     "id": "9658784",
     "op_type": "RET",
     "red_perc": "37",
-    "compens": "149",
+    "compens": "0",
     "op_day": "2025-07-25"
   },
   {
@@ -34052,7 +34052,7 @@
     "id": "9658785",
     "op_type": "RET",
     "red_perc": "37",
-    "compens": "223",
+    "compens": "0",
     "op_day": "2025-07-25"
   },
   {
@@ -34250,7 +34250,7 @@
     "id": "9630009",
     "op_type": "RET",
     "red_perc": "51",
-    "compens": "113",
+    "compens": "0",
     "op_day": "2025-07-22"
   },
   {
@@ -39326,7 +39326,7 @@
     "id": "9641999",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "463",
+    "compens": "0",
     "op_day": "2025-07-23"
   },
   {
@@ -41537,6 +41537,24 @@
     "price": "670",
     "tck_series": "GS",
     "base_price": "670",
+    "id": "9818611",
+    "op_type": "RET",
+    "red_perc": "0",
+    "compens": "67",
+    "op_day": "2025-08-11"
+  },
+  {
+    "tck_number": "10251936",
+    "vat": "50",
+    "offer_code": "1",
+    "red_value": "0",
+    "tar50": "0",
+    "tar100": "1",
+    "red_code": "1",
+    "rec_type": "ST",
+    "price": "670",
+    "tck_series": "GS",
+    "base_price": "670",
     "id": "9650962",
     "op_type": "SALE",
     "red_perc": "0",
@@ -42908,7 +42926,7 @@
     "id": "9689272",
     "op_type": "RET",
     "red_perc": "51",
-    "compens": "414",
+    "compens": "0",
     "op_day": "2025-07-28"
   },
   {
@@ -43268,7 +43286,7 @@
     "id": "9659816",
     "op_type": "RET",
     "red_perc": "37",
-    "compens": "227",
+    "compens": "0",
     "op_day": "2025-07-25"
   },
   {
@@ -43304,7 +43322,7 @@
     "id": "9659818",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "506",
+    "compens": "0",
     "op_day": "2025-07-25"
   },
   {
@@ -43340,7 +43358,7 @@
     "id": "9659817",
     "op_type": "RET",
     "red_perc": "37",
-    "compens": "227",
+    "compens": "0",
     "op_day": "2025-07-25"
   },
   {
@@ -44708,7 +44726,7 @@
     "id": "9666533",
     "op_type": "RET",
     "red_perc": "33",
-    "compens": "85",
+    "compens": "0",
     "op_day": "2025-07-26"
   },
   {
@@ -44942,7 +44960,7 @@
     "id": "9703941",
     "op_type": "RET",
     "red_perc": "51",
-    "compens": "569",
+    "compens": "0",
     "op_day": "2025-07-30"
   },
   {
@@ -52070,7 +52088,7 @@
     "id": "9694320",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "297",
+    "compens": "0",
     "op_day": "2025-07-29"
   },
   {
@@ -52232,7 +52250,7 @@
     "id": "9694975",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "594",
+    "compens": "0",
     "op_day": "2025-07-29"
   },
   {
@@ -53276,7 +53294,7 @@
     "id": "9700051",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "440",
+    "compens": "0",
     "op_day": "2025-07-29"
   },
   {
@@ -53312,7 +53330,7 @@
     "id": "9751672",
     "op_type": "RET",
     "red_perc": "0",
-    "compens": "310",
+    "compens": "0",
     "op_day": "2025-07-29"
   },
   {
@@ -56572,6 +56590,24 @@
     "red_perc": "0",
     "compens": "0",
     "op_day": "2025-07-31"
+  },
+  {
+    "tck_number": "10252687",
+    "vat": "287",
+    "offer_code": "16",
+    "red_value": "0",
+    "tar50": "0",
+    "tar100": "1",
+    "red_code": "1",
+    "rec_type": "ST",
+    "price": "3870",
+    "tck_series": "GS",
+    "base_price": "3870",
+    "id": "9799852",
+    "op_type": "RET",
+    "red_perc": "0",
+    "compens": "659",
+    "op_day": "2025-08-09"
   },
   {
     "tck_number": "10252687",

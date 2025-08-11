@@ -1,6 +1,7 @@
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.Csv;
+import pl.pkpik.bilkom.pivotcsv.csv.CsvData;
 import pl.pkpik.bilkom.pivotcsv.pivottable.PivotTableBuilder;
 import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Sum;
 import pl.pkpik.bilkom.pivotcsv.projection.Projection;
@@ -8,11 +9,6 @@ import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static pl.pkpik.bilkom.pivotcsv.csv.Csv.GSON;
 import static pl.pkpik.bilkom.pivotcsv.filters.FilterBuilder.field;
@@ -25,15 +21,30 @@ public class Test {
     @SneakyThrows
     public static void main(String[] args) {
         Test test = new Test();
-        Csv csv = new PivotTableBuilder(test.loadData())
-                .withFilter(field("rec_type").in("SR", "ST"))
-                .withRowFields("tck_series","tck_number","op_type","op_day","offer_code","red_code","base_price")
+        test.cmpStOsdm();
+//        test.cmpSrSt();
+    }
+
+    private void cmpStOsdm() throws IOException {
+        new PivotTableBuilder(loadData())
+                .withFilter(field("rec_type").in("OSDM", "ST"))
+                .withRowFields("tck_series","tck_number","op_type","op_day","offer_code", "red_code","base_price")
                 .withColumnFields("rec_type")
                 .withDataFields(Sum.of("price"), Sum.of("vat"), Sum.of("compens"))
                 .withRowSummary()
                 .build()
                 .asCsv().save(new File(OUT_FOLDER, "pivot.csv"));
-        System.out.println(csv.size());
+    }
+
+    private void cmpSrSt() throws IOException {
+        new PivotTableBuilder(loadData())
+                .withFilter(field("rec_type").in("SR", "ST"))
+                .withRowFields("tck_series","tck_number","op_type","op_day")
+                .withColumnFields("rec_type")
+                .withDataFields(Sum.of("price"), Sum.of("vat"), Sum.of("compens"))
+                .withRowSummary()
+                .build()
+                .asCsv().save(new File(OUT_FOLDER, "pivot.csv"));
     }
 
 
@@ -153,17 +164,4 @@ public class Test {
         System.out.println("Load saleTemporary: " + csv.size());
         return csv;
     }
-
-
-    public static class CsvData extends ArrayList<HashMap<String, String>> {
-
-        public List<Map<String, Object>> toList() {
-            return super.stream().map(this::toMap).collect(Collectors.toList());
-        }
-
-        private Map<String, Object> toMap(HashMap<String, String> element) {
-            return new HashMap<>(element);
-        }
-    }
-
 }

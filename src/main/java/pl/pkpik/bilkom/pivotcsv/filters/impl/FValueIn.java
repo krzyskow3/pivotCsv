@@ -12,7 +12,7 @@ public class FValueIn extends BaseFilter implements Filter {
 
     public FValueIn(String field, String... values) {
         super(field);
-        this.values = Arrays.stream(values).toList();
+        this.values = Arrays.asList(values);
         this.function = field(field).in(values);
     }
 

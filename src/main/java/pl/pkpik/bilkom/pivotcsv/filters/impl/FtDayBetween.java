@@ -5,6 +5,7 @@ import pl.pkpik.bilkom.pivotcsv.filters.BaseFilter;
 import pl.pkpik.bilkom.pivotcsv.filters.Filter;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import static pl.pkpik.bilkom.pivotcsv.functions.FunctionBuilder.field;
@@ -16,7 +17,7 @@ public class FtDayBetween extends BaseFilter implements Filter {
 
     public FtDayBetween(@NotNull String field, @NotNull LocalDate fromDay, @NotNull LocalDate toDay) {
         super(field);
-        this.values = List.of(fromDay.toString(), toDay.toString());
+        this.values = Arrays.asList(fromDay.toString(), toDay.toString());
         this.function = field(field).between(fromDay, toDay);
         this.fromDay = fromDay;
         this.toDay = toDay;
