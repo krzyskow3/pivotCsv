@@ -9,6 +9,7 @@ import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 import static pl.pkpik.bilkom.pivotcsv.csv.Csv.GSON;
 import static pl.pkpik.bilkom.pivotcsv.filters.FilterBuilder.field;
@@ -21,9 +22,19 @@ public class Test {
     @SneakyThrows
     public static void main(String[] args) {
         Test test = new Test();
-        test.loadData();
+        test.prettyPrintTest();
+
+        System.out.println();
+
+        test.loadData().prettyPrint();
 //        test.cmpStOsdm();
         test.cmpSrSt();
+    }
+
+    private void prettyPrintTest() throws IOException {
+        Csv csv = loadData();
+        List<String> print = csv.prettyPrint();
+        FileUtils.writeLines(new File(OUT_FOLDER, "all_pretty_print.txt"), print);
     }
 
     private void cmpStOsdm() throws IOException {

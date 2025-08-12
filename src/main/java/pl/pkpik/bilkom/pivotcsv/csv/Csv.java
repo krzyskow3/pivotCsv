@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import pl.pkpik.bilkom.pivotcsv.csv.printer.CsvPrettyPrinter;
 import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 
 import java.io.File;
@@ -91,6 +92,8 @@ public class Csv {
 
     public List<Record> getRecords() { return new ArrayList<>(records); }
 
+    public List<String> getFields() { return new ArrayList<>(fields); }
+
     public Csv projection(Projection projection) {
         return Csv.create(new ArrayList<>(), projection.getFields(), projection.convertRecords(records));
     }
@@ -139,4 +142,7 @@ public class Csv {
         return this;
     }
 
+    public List<String> prettyPrint() {
+        return new CsvPrettyPrinter(this).print();
+    }
 }
