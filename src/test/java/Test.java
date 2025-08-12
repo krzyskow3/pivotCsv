@@ -21,7 +21,8 @@ public class Test {
     @SneakyThrows
     public static void main(String[] args) {
         Test test = new Test();
-        test.cmpStOsdm();
+        test.loadData();
+//        test.cmpStOsdm();
         test.cmpSrSt();
     }
 
@@ -38,10 +39,10 @@ public class Test {
 
     private void cmpSrSt() throws IOException {
         new PivotTableBuilder(loadData())
-                .withFilter(field("rec_type").in("SR", "ST"))
-                .withRowFields("tck_series","tck_number","op_type","op_day")
-                .withColumnFields("rec_type")
-                .withDataFields(Sum.of("price"), Sum.of("vat"), Sum.of("compens"))
+                .withFilter(field("rec_type").in("KD", "ST"))
+                .withRowFields("tck_series","tck_number", "op_day")
+                .withColumnFields("op_type", "rec_type")
+                .withDataFields(Sum.of("price"), Sum.of("compens"))
                 .withRowSummary()
                 .build()
                 .asCsv().save(new File(OUT_FOLDER, "out_cmp_sr_st.csv"));
@@ -49,66 +50,66 @@ public class Test {
 
 
     private Csv loadData() throws IOException {
-        LocalDate fromDay = LocalDate.of(2025, 7, 8);
+        LocalDate fromDay = LocalDate.of(2025, 7, 1);
         LocalDate toDay = LocalDate.of(2025, 7, 31);
-        File saleOsdmFile = new File(DATA_FOLDER, "sale_osdm.csv");
-        File retOsdmFile = new File(DATA_FOLDER, "return_osdm.csv");
+        File kdSaleFile = new File(DATA_FOLDER, "kd_sale.csv");
+        File kdRetFile = new File(DATA_FOLDER, "kd_ret.csv");
         File saleRecordsFile = new File(DATA_FOLDER, "sale_records.json");
         File saleTemporaryFile = new File(DATA_FOLDER, "sale_temporary.json");
         OUT_FOLDER.mkdirs();
-        return loadSaleOsdm(fromDay, toDay, saleOsdmFile)
-                .merge(loadReturnOsdm(fromDay, toDay, retOsdmFile))
+        return loadKdSale(fromDay, toDay, kdSaleFile)
+                .merge(loadKdRet(fromDay, toDay, kdRetFile))
                 .merge(loadSaleRecords(fromDay, toDay, saleRecordsFile))
                 .merge(loadSaleTemporary(fromDay, toDay, saleTemporaryFile))
                 .save(new File(OUT_FOLDER, "all.csv"));
     }
 
-    private Csv loadSaleOsdm(LocalDate fromDay, LocalDate toDay, File file) throws IOException {
+    private Csv loadKdSale(LocalDate fromDay, LocalDate toDay, File file) throws IOException {
         Csv csv = Csv.load(file)
                 .projection(new Projection()
                         .addField("id", null)
-                        .addField("rec_type", "OSDM")
+                        .addField("rec_type", "KD")
                         .addField("op_type", "SALE")
-                        .mapField("op_day", "data_sp")
-                        .mapField("tck_series", "seria")
-                        .mapField("tck_number", "nr_bil")
-                        .mapField("offer_code", "oferta")
-                        .mapField("base_price", "cena_jedn")
-                        .mapField("price", "nalezn")
-                        .mapField("vat", "ptu_kwota")
+                        .mapField("op_day", "DATA_SP")
+                        .mapField("tck_series", "SERIA")
+                        .mapField("tck_number", "NR_BIL")
+                        .mapField("offer_code", "OFERTA")
+                        .mapField("base_price", "CENA_JEDN")
+                        .mapField("price", "NALEZN")
+                        .mapField("vat", "PTU_KWOTA")
                         .addField("compens", "0")
-                        .mapField("tar_100")
-                        .mapField("tar_50")
-                        .mapField("red_code")
-                        .mapField("red_value")
-                        .mapField("red_perc")
+                        .mapField("tar_100", "TAR_100")
+                        .mapField("tar_50", "TAR_50")
+                        .mapField("red_code", "RED_CODE")
+                        .mapField("red_value", "RED_VALUE")
+                        .mapField("red_perc", "RED_PERC")
                         .addFilter(field("op_day").between(fromDay, toDay)))
-                .save(new File(OUT_FOLDER, "out_sale_osdm.csv"));
+                .save(new File(OUT_FOLDER, "out_kd_sale.csv"));
         System.out.println("Load saleOsdm: " + csv.size());
         return csv;
     }
 
-    private Csv loadReturnOsdm(LocalDate fromDay, LocalDate toDay, File file) throws IOException {
+    private Csv loadKdRet(LocalDate fromDay, LocalDate toDay, File file) throws IOException {
         Csv csv = Csv.load(file)
                 .projection(new Projection()
                         .addField("id", null)
-                        .addField("rec_type", "OSDM")
+                        .addField("rec_type", "KD")
                         .addField("op_type", "RET")
-                        .mapField("op_day", "data_zw")
-                        .mapField("tck_series", "seria")
-                        .mapField("tck_number", "nr_bil")
-                        .mapField("offer_code", "oferta")
-                        .mapField("base_price", "cena_jedn")
-                        .mapField("price", "kwota_z")
-                        .mapField("vat", "ptu_kwota")
-                        .mapField("compens", "p_ag_value")
-                        .mapField("tar_100")
-                        .mapField("tar_50")
-                        .mapField("red_code")
-                        .mapField("red_value")
-                        .mapField("red_perc")
+                        .mapField("op_day", "DATA_ZW")
+                        .mapField("tck_series", "SERIA")
+                        .mapField("tck_number", "NR_BIL")
+                        .mapField("offer_code", "OFERTA")
+                        .mapField("base_price", "CENA_JEDN")
+                        .mapField("price", "KWOTA_Z")
+                        .mapField("vat", "PTU_KWOTA")
+                        .mapField("compens", "P_AG_VALUE")
+                        .mapField("tar_100", "TAR_100")
+                        .mapField("tar_50", "TAR_50")
+                        .mapField("red_code", "RED_CODE")
+                        .mapField("red_value", "RED_VALUE")
+                        .mapField("red_perc", "RED_PERC")
                         .addFilter(field("op_day").between(fromDay, toDay)))
-                .save(new File(OUT_FOLDER, "out_return_osdm.csv"));
+                .save(new File(OUT_FOLDER, "out_kd_ret.csv"));
         System.out.println("Load returnOsdm: " + csv.size());
         return csv;
     }
