@@ -19,6 +19,9 @@ public class Test {
     private static final File DATA_FOLDER = new File("src/test/resources");
     private static final File OUT_FOLDER = new File("target/out");
 
+    private final LocalDate fromDay = LocalDate.of(2025, 8, 1);
+    private final LocalDate toDay = LocalDate.of(2025, 8, 12);
+
     @SneakyThrows
     public static void main(String[] args) {
         Test test = new Test();
@@ -61,8 +64,6 @@ public class Test {
 
 
     private Csv loadData() throws IOException {
-        LocalDate fromDay = LocalDate.of(2025, 7, 1);
-        LocalDate toDay = LocalDate.of(2025, 7, 31);
         File kdSaleFile = new File(DATA_FOLDER, "kd_sale.csv");
         File kdRetFile = new File(DATA_FOLDER, "kd_ret.csv");
         File saleRecordsFile = new File(DATA_FOLDER, "sale_records.json");
@@ -81,22 +82,22 @@ public class Test {
                         .addField("id", null)
                         .addField("rec_type", "KD")
                         .addField("op_type", "SALE")
-                        .mapField("op_day", "DATA_SP")
-                        .mapField("tck_series", "SERIA")
-                        .mapField("tck_number", "NR_BIL")
-                        .mapField("offer_code", "OFERTA")
-                        .mapField("base_price", "CENA_JEDN")
-                        .mapField("price", "NALEZN")
-                        .mapField("vat", "PTU_KWOTA")
-                        .addField("compens", "0")
-                        .mapField("tar_100", "TAR_100")
-                        .mapField("tar_50", "TAR_50")
-                        .mapField("red_code", "RED_CODE")
-                        .mapField("red_value", "RED_VALUE")
-                        .mapField("red_perc", "RED_PERC")
+                        .mapField("op_day", "data_sp")
+                        .mapField("tck_series", "seria")
+                        .mapField("tck_number", "nr_bil")
+                        .mapField("offer_code", "oferta")
+                        .mapField("base_price", "cena_jedn")
+                        .mapField("price", "nalezn")
+                        .mapField("vat", "ptu_kwota")
+                        .addField("compens", "odstepne_kwota")
+                        .mapField("tar_100", "tar_100")
+                        .mapField("tar_50", "tar_50")
+                        .mapField("red_code", "red_code")
+                        .mapField("red_value", "red_value")
+                        .mapField("red_perc", "red_perc")
                         .addFilter(field("op_day").between(fromDay, toDay)))
                 .save(new File(OUT_FOLDER, "out_kd_sale.csv"));
-        System.out.println("Load saleOsdm: " + csv.size());
+        System.out.println("Load kdSale: " + csv.size());
         return csv;
     }
 
@@ -106,22 +107,22 @@ public class Test {
                         .addField("id", null)
                         .addField("rec_type", "KD")
                         .addField("op_type", "RET")
-                        .mapField("op_day", "DATA_ZW")
-                        .mapField("tck_series", "SERIA")
-                        .mapField("tck_number", "NR_BIL")
-                        .mapField("offer_code", "OFERTA")
-                        .mapField("base_price", "CENA_JEDN")
-                        .mapField("price", "KWOTA_Z")
-                        .mapField("vat", "PTU_KWOTA")
-                        .mapField("compens", "P_AG_VALUE")
-                        .mapField("tar_100", "TAR_100")
-                        .mapField("tar_50", "TAR_50")
-                        .mapField("red_code", "RED_CODE")
-                        .mapField("red_value", "RED_VALUE")
-                        .mapField("red_perc", "RED_PERC")
+                        .mapField("op_day", "data_zwrotu")
+                        .mapField("tck_series", "seria")
+                        .mapField("tck_number", "nr_bil")
+                        .mapField("offer_code", "oferta")
+                        .mapField("base_price", "cena_jedn")
+                        .mapField("price", "nalezn")
+                        .mapField("vat", "ptu_kwota")
+                        .mapField("compens", "odstepne_kwota")
+                        .mapField("tar_100", "tar_100")
+                        .mapField("tar_50", "tar_50")
+                        .mapField("red_code", "red_code")
+                        .mapField("red_value", "red_value")
+                        .mapField("red_perc", "red_perc")
                         .addFilter(field("op_day").between(fromDay, toDay)))
                 .save(new File(OUT_FOLDER, "out_kd_ret.csv"));
-        System.out.println("Load returnOsdm: " + csv.size());
+        System.out.println("Load kdRet: " + csv.size());
         return csv;
     }
 
