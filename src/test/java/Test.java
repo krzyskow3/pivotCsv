@@ -4,6 +4,8 @@ import pl.pkpik.bilkom.pivotcsv.csv.Csv;
 import pl.pkpik.bilkom.pivotcsv.csv.CsvData;
 import pl.pkpik.bilkom.pivotcsv.pivottable.PivotTable;
 import pl.pkpik.bilkom.pivotcsv.pivottable.PivotTableBuilder;
+import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Count;
+import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Max;
 import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Sum;
 import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 
@@ -29,16 +31,29 @@ public class Test {
         Csv all = test.loadData();
         Csv selected = test.selectKdStTickets(all);
         test.cmpKdStItems(selected);
+        test.cmpKdSt1617(selected);
 
 
+    }
+
+    private void cmpKdSt1617(Csv selected) throws IOException {
+        new PivotTableBuilder(selected)
+                .withFilter(field("rec_type").in("KD", "ST"))
+                .withFilter(field("offer_code").in("16", "17"))
+                .withRowFields("tck_series","tck_number","op_type","op_day")
+                .withColumnFields("rec_type","offer_code")
+                .withDataFields(Sum.of("price"), Count.of("id"), Max.of("id"))
+                .withRowSummary()
+                .build()
+                .toCsv().save(new File(OUT_FOLDER, "cmp_kd_st_1617.csv"));
     }
 
     private void cmpKdStItems(Csv selected) throws IOException {
         new PivotTableBuilder(selected)
                 .withFilter(field("rec_type").in("KD", "ST"))
-                .withRowFields("tck_series","tck_number","op_type","op_day","offer_code", "red_code","base_price", "id")
+                .withRowFields("tck_series","tck_number","op_type","op_day","offer_code","red_code")
                 .withColumnFields("rec_type")
-                .withDataFields(Sum.of("price"))
+                .withDataFields(Sum.of("price"), Count.of("id"), Max.of("id"))
                 .withRowSummary()
                 .build()
                 .toCsv().save(new File(OUT_FOLDER, "cmp_kd_st_items.csv"));
