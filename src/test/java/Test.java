@@ -2,6 +2,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.Csv;
 import pl.pkpik.bilkom.pivotcsv.csv.CsvData;
+import pl.pkpik.bilkom.pivotcsv.csv.db.DbConnection;
 import pl.pkpik.bilkom.pivotcsv.pivottable.PivotTable;
 import pl.pkpik.bilkom.pivotcsv.pivottable.PivotTableBuilder;
 import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Count;
@@ -12,7 +13,6 @@ import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 
 import static pl.pkpik.bilkom.pivotcsv.csv.Csv.GSON;
 import static pl.pkpik.bilkom.pivotcsv.filters.FilterBuilder.field;
@@ -32,8 +32,6 @@ public class Test {
         Csv selected = test.selectKdStTickets(all);
         test.cmpKdStItems(selected);
         test.cmpKdSt1617(selected);
-
-
     }
 
     private void cmpKdSt1617(Csv selected) throws IOException {
@@ -157,15 +155,43 @@ public class Test {
                         .mapField("red_value")
                         .mapField("red_perc")
                         .addFilter(field("op_day").between(fromDay, toDay)))
-                .save(new File(OUT_FOLDER, "out_sale_records.scv"));
+                .save(new File(OUT_FOLDER, "out_sale_records.csv"));
         System.out.println("Load saleRecords: " + csv.size());
         return csv;
     }
 
+    private static final String SELECT_SALE_TEMPORARY = "SELECT " +
+            "id, " +
+            "'ST' AS rec_type, " +
+            "(CASE WHEN data_zwrotu IS NULL THEN 'SALE' ELSE 'RET' END) AS op_type, " +
+            "(CASE WHEN data_zwrotu IS NULL THEN data_sp ELSE data_zwrotu END)::date AS op_day, " +
+            "seria AS tck_series, " +
+            "nr_bil AS tck_number, " +
+            "oferta AS offer_code, " +
+            "cena_jedn AS base_price, " +
+            "abs(nalezn) AS price, " +
+            "abs(nalezn)-abs(ptu_kwota) AS vat, " +
+            "odstepne_kwota AS compens, " +
+            "tar_100 AS tar100, " +
+            "tar_50 AS tar50, " +
+            "red_code, " +
+            "abs(red_value) AS red_value, " +
+            "red_perc " +
+            "FROM sale_temporary";
+
     private Csv loadSaleTemporary(LocalDate fromDay, LocalDate toDay, File file) throws IOException {
+        if (!file.exists()) {
+            System.out.println("Loading saleTemporary from DB...");
+            return saleTemporaryProjection(DbConnection.BILKOM.executeQuery(SELECT_SALE_TEMPORARY));
+        }
+        System.out.println("Loading saleTemporary from file... " + file.getName());
         String json = FileUtils.readFileToString(file, "UTF-8");
         CsvData data = GSON.fromJson(json, CsvData.class);
-        Csv csv = Csv.create(data.toList()).projection(new Projection()
+        return saleTemporaryProjection(Csv.create(data.toList()));
+    }
+
+    private Csv saleTemporaryProjection(Csv rawCsv) throws IOException {
+        Csv csv = rawCsv.projection(new Projection()
                         .mapField("id")
                         .mapField("rec_type")
                         .mapField("op_type")
@@ -183,8 +209,9 @@ public class Test {
                         .mapField("red_value")
                         .mapField("red_perc")
                         .addFilter(field("op_day").between(fromDay, toDay)))
-                .save(new File(OUT_FOLDER, "out_sale_temporary.scv"));
+                .save(new File(OUT_FOLDER, "out_sale_temporary.csv"));
         System.out.println("Load saleTemporary: " + csv.size());
         return csv;
     }
+
 }
