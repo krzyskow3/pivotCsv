@@ -13,15 +13,17 @@ import java.util.stream.IntStream;
 
 public abstract class BaseFieldsKey implements Comparable<BaseFieldsKey> {
 
-    private final List<@NotNull String> values;
+    private final List<String> fields;
+    private final List<String> values;
 
     public BaseFieldsKey(@NotNull Record record, @NotNull List<String> fields) {
-        this(fields.stream()
+        this(fields, fields.stream()
                 .map(record::getValue)
                 .collect(Collectors.toList()));
     }
 
-    private BaseFieldsKey(List<@NotNull String> values) {
+    private BaseFieldsKey(List<String> fields, List<String> values) {
+        this.fields = fields;
         this.values = values;
     }
 
@@ -29,6 +31,9 @@ public abstract class BaseFieldsKey implements Comparable<BaseFieldsKey> {
         return values.size();
     }
 
+    public List<String> getFields() {
+        return new ArrayList<>(fields);
+    }
     public List<String> getValues() {
         return new ArrayList<>(values);
     }

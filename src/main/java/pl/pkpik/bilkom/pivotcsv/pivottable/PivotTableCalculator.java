@@ -25,6 +25,7 @@ class PivotTableCalculator {
         groupRecords();
         sortKeys();
         prepareDataColumns();
+        calculateRowRecords();
     }
 
     private void filterRecords() {
@@ -57,6 +58,12 @@ class PivotTableCalculator {
             for (ColumnKey columnKey : table.columnKeys) {
                 table.dataColumns.add(new DataColumnDto(aggregator, columnKey));
             }
+        }
+    }
+
+    private void calculateRowRecords() {
+        for (RowDto row : table.rows.values()) {
+            row.calculateRowRecord(table.dataColumns);
         }
     }
 

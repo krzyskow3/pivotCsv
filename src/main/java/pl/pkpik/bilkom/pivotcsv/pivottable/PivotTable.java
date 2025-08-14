@@ -9,10 +9,8 @@ import pl.pkpik.bilkom.pivotcsv.pivottable.columns.DataColumnDto;
 import pl.pkpik.bilkom.pivotcsv.pivottable.rows.RowDto;
 import pl.pkpik.bilkom.pivotcsv.pivottable.rows.RowKey;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public class PivotTable {
@@ -30,9 +28,32 @@ public class PivotTable {
     final List<ColumnKey> columnKeys = new ArrayList<>();
     final List<DataColumnDto> dataColumns = new ArrayList<>();
 
+    final List<Filter> rowFilters = new ArrayList<>();
+    final List<RowKey> selectedRowKeys = new ArrayList<>();
 
+    public PivotTable having(Filter... filters) {
+        rowFilters.addAll(Arrays.stream(filters).collect(Collectors.toList()));
+        return this;
+    }
 
-    public Csv asCsv() {
+    public Csv toCsv() {
+        filterRowKeys();
         return new PivotTableCsvBuilder(this).build();
+    }
+
+    public Csv toDetailsCsv() {
+        filterRowKeys();
+        return new PivotTableDetailsCsvBuilder(this).build();
+    }
+
+    private void filterRowKeys() {
+        selectedRowKeys.clear();
+        List<RowKey> selected = new ArrayList<>(rowKeys);
+        for (Filter filter : rowFilters) {
+            selected = selected.stream()
+                    .filter(key -> filter.match(rows.get(key).getRowRecord()))
+                    .collect(Collectors.toList());
+        }
+        selectedRowKeys.addAll(selected);
     }
 }

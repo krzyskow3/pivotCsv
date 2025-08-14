@@ -47,17 +47,11 @@ class PivotTableCsvBuilder {
     }
 
     private void makeCsvRecords(Csv csv) {
-        for (int i = 0; i < table.rowKeys.size(); i++) {
-            RowKey rowKey = table.rowKeys.get(i);
+        for (int i = 0; i < table.selectedRowKeys.size(); i++) {
+            RowKey rowKey = table.selectedRowKeys.get(i);
             RowDto rowDto = table.rows.get(rowKey);
-            Record record = new Record();
+            Record record = rowDto.getRowRecord().copy();
             record.setValue("row", Integer.toString(i + 1));
-            record.setAllValues(table.rowFields, rowKey.getValues());
-            for (DataColumnDto dto : table.dataColumns) {
-                List<Record> dataRecords = rowDto.getRecords(dto.columnKey);
-                String value = dto.aggregator.aggregate(dataRecords);
-                record.setValue(dto.fieldName, value);
-            }
             csv.addRecord(record);
         }
     }

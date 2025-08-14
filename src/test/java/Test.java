@@ -2,6 +2,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.Csv;
 import pl.pkpik.bilkom.pivotcsv.csv.CsvData;
+import pl.pkpik.bilkom.pivotcsv.pivottable.PivotTable;
 import pl.pkpik.bilkom.pivotcsv.pivottable.PivotTableBuilder;
 import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Sum;
 import pl.pkpik.bilkom.pivotcsv.projection.Projection;
@@ -20,46 +21,40 @@ public class Test {
     private static final File OUT_FOLDER = new File("target/out");
 
     private final LocalDate fromDay = LocalDate.of(2025, 8, 1);
-    private final LocalDate toDay = LocalDate.of(2025, 8, 12);
+    private final LocalDate toDay = LocalDate.of(2025, 8, 13);
 
     @SneakyThrows
     public static void main(String[] args) {
         Test test = new Test();
-        test.prettyPrintTest();
+        Csv all = test.loadData();
+        Csv selected = test.selectKdStTickets(all);
+        test.cmpKdStItems(selected);
 
-        System.out.println();
 
-        test.loadData().prettyPrint();
-//        test.cmpStOsdm();
-        test.cmpSrSt();
     }
 
-    private void prettyPrintTest() throws IOException {
-        Csv csv = loadData();
-        List<String> print = csv.prettyPrint();
-        FileUtils.writeLines(new File(OUT_FOLDER, "all_pretty_print.txt"), print);
-    }
-
-    private void cmpStOsdm() throws IOException {
-        new PivotTableBuilder(loadData())
-                .withFilter(field("rec_type").in("OSDM", "ST"))
-                .withRowFields("tck_series","tck_number","op_type","op_day","offer_code", "red_code","base_price")
-                .withColumnFields("rec_type")
-                .withDataFields(Sum.of("price"), Sum.of("vat"), Sum.of("compens"))
-                .withRowSummary()
-                .build()
-                .asCsv().save(new File(OUT_FOLDER, "out_cmp_st_osdm.csv"));
-    }
-
-    private void cmpSrSt() throws IOException {
-        new PivotTableBuilder(loadData())
+    private void cmpKdStItems(Csv selected) throws IOException {
+        new PivotTableBuilder(selected)
                 .withFilter(field("rec_type").in("KD", "ST"))
-                .withRowFields("tck_series","tck_number", "op_day")
-                .withColumnFields("op_type", "rec_type")
-                .withDataFields(Sum.of("price"), Sum.of("compens"))
+                .withRowFields("tck_series","tck_number","op_type","op_day","offer_code", "red_code","base_price", "id")
+                .withColumnFields("rec_type")
+                .withDataFields(Sum.of("price"))
                 .withRowSummary()
                 .build()
-                .asCsv().save(new File(OUT_FOLDER, "out_cmp_sr_st.csv"));
+                .toCsv().save(new File(OUT_FOLDER, "cmp_kd_st_items.csv"));
+    }
+
+    private Csv selectKdStTickets(Csv all) throws IOException {
+        PivotTable pivotTable = new PivotTableBuilder(all)
+                .withFilter(field("rec_type").in("KD", "ST"))
+                .withRowFields("tck_number", "op_type")
+                .withColumnFields("rec_type")
+                .withDataFields(Sum.of("price"))
+                .withRowSummary()
+                .build()
+                .having(field("sum_price_KD").notEmpty(), field("sum_price_ST").notEmpty());
+        pivotTable.toCsv().save(new File(OUT_FOLDER, "pivot_kd_st_tickets.csv"));
+        return pivotTable.toDetailsCsv().save(new File(OUT_FOLDER, "selected.csv"));
     }
 
 
@@ -89,7 +84,7 @@ public class Test {
                         .mapField("base_price", "cena_jedn")
                         .mapField("price", "nalezn")
                         .mapField("vat", "ptu_kwota")
-                        .addField("compens", "odstepne_kwota")
+                        .mapField("compens", "odstepne_kwota")
                         .mapField("tar_100", "tar_100")
                         .mapField("tar_50", "tar_50")
                         .mapField("red_code", "red_code")

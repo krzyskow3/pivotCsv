@@ -53,6 +53,10 @@ public abstract class BaseFunction implements Function {
         return new FnDayBetween(fromDay, toDay).link(this);
     }
 
+    public Function notEmpty() {
+        return new FnNotEmpty().link(this);
+    }
+
     @Override
     public String getValue(Record record, Param... params) {
         if (parent == null) {
@@ -114,5 +118,4 @@ public abstract class BaseFunction implements Function {
         String[] split = StringUtils.split(getClass().getName(), '.');
         return split[split.length - 1];
     }
-
 }
