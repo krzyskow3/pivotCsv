@@ -33,7 +33,17 @@ public abstract class BaseFunction implements Function {
         return this;
     }
 
-    public static BaseFunction field(String field) { return new FnField(field); }
+    public static BaseFunction field(String field) {
+        return new FnField(field);
+    }
+
+    public static BaseFunction round(BaseFunction arg) {
+        return new FnRound(arg.root());
+    }
+
+    public static BaseFunction not(BaseFunction arg) {
+        return new FnNot(arg.root());
+    }
 
     public BaseFunction multiply(BaseFunction arg) {
         return new FnMultiply(arg.root()).link(this);
@@ -53,6 +63,10 @@ public abstract class BaseFunction implements Function {
 
     public BaseFunction and(BaseFunction arg) {
         return new FnAnd(arg.root()).link(this);
+    }
+
+    public BaseFunction or(BaseFunction arg) {
+        return new FnOr(arg.root()).link(this);
     }
 
     public BaseFunction in(String... values) {

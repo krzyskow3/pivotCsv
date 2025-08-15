@@ -10,7 +10,7 @@ import pl.pkpik.bilkom.pivotcsv.pivottable.aggregators.Sum;
 import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 
 import static pl.pkpik.bilkom.pivotcsv.filters.FilterBuilder.ftField;
-import static pl.pkpik.bilkom.pivotcsv.functions.BaseFunction.field;
+import static pl.pkpik.bilkom.pivotcsv.functions.BaseFunction.*;
 import static pl.pkpik.bilkom.pivotcsv.functions.FunctionBuilder.fnCase;
 
 public class UEB132 implements Runnable {
@@ -36,7 +36,7 @@ public class UEB132 implements Runnable {
         cmpKdSt1617(selected);
         cmpKdSt161171(selected);
         Csv cmpOfferItems = cmpKdStOfferItems(selected);
-
+        script4(cmpOfferItems);
 
     }
 
@@ -101,6 +101,39 @@ public class UEB132 implements Runnable {
                 .save(ctx.script3(), "script3_" + offer1 + offer2);
     }
 
+    private void script4(Csv cmpOfferItems) {
+        cmpOfferItems.projection(new Projection()
+                .mapField("id", "max_id_ST")
+                .mapField("tck_series")
+                .mapField("tck_number")
+                .mapField("op_type")
+                .mapField("diff_base_price")
+                .mapField("diff_price")
+                .mapField("diff_vat")
+                .mapField("diff_compens")
+                .mapField("diff_tar_100")
+                .mapField("diff_tar_50")
+                .mapField("diff_red_code")
+                .mapField("diff_red_value")
+                .mapField("diff_red_perc")
+                .mapField("base_price", "max_base_price_KD")
+                .mapField("price")
+                .mapField("vat")
+                .mapField("compens", "sum_compens_KD")
+                .mapField("tar_100", "sum_tar_100_KD")
+                .mapField("tar_50", "sum_tar_50_KD")
+                .mapField("red_code", "max_red_code_KD")
+                .mapField("red_value")
+                .mapField("red_perc", "max_red_perc_KD")
+                .mapField("diff", "diff_any")
+                .mapField("count_kd", "count_id_KD")
+                .mapField("count_st", "count_id_ST")
+                .addFilter(ftField("diff").eq("true"))
+                .addFilter(ftField("count_kd").eq("1"))
+                .addFilter(ftField("count_st").eq("1"))
+        ).save(ctx.csvSaver, "script4");
+    }
+
     private Csv selectKdStTickets(Csv all) {
         PivotTable pivotTable = new PivotTableBuilder(all)
                 .withFilter(ftField("rec_type").in("KD", "ST"))
@@ -156,27 +189,27 @@ public class UEB132 implements Runnable {
                 .build()
                 .toCsv()
                 .calcField("signum", fnCase(field("op_type").eq("SALE"), 1, -1))
-                .calcField("price", field("sum_price_KD").multiply(field("signum")))
-                .calcField("vat", field("sum_vat_KD").multiply(field("signum")))
-                .calcField("red_value", field("sum_red_value_KD").multiply(field("signum")))
-                .calcField("same_base_price", field("max_base_price_KD").eq(field("max_base_price_ST")))
-                .calcField("same_price", field("price").eq(field("sum_price_ST")))
-                .calcField("same_vat", field("vat").eq(field("sum_vat_ST")))
-                .calcField("same_compens", field("sum_compens_KD").eq(field("sum_compens_ST")))
-                .calcField("same_tar_100", field("sum_tar_100_KD").eq(field("sum_tar_100_ST")))
-                .calcField("same_tar_50", field("sum_tar_50_KD").eq(field("sum_tar_50_ST")))
-                .calcField("same_red_code", field("max_red_code_KD").eq(field("max_red_code_ST")))
-                .calcField("same_red_value", field("red_value").eq(field("sum_red_value_ST")))
-                .calcField("same_red_perc", field("max_red_perc_KD").eq(field("max_red_perc_ST")))
-                .calcField("same_all", field("same_base_price")
-                        .and(field("same_price"))
-                        .and(field("same_vat"))
-                        .and(field("same_compens"))
-                        .and(field("same_tar_100"))
-                        .and(field("same_tar_50"))
-                        .and(field("same_red_code"))
-                        .and(field("same_red_value"))
-                        .and(field("same_red_perc"))
+                .calcField("price", round(field("sum_price_KD").multiply(field("signum"))))
+                .calcField("vat", round(field("sum_vat_KD").multiply(field("signum"))))
+                .calcField("red_value", round(field("sum_red_value_KD").multiply(field("signum"))))
+                .calcField("diff_base_price", not(field("max_base_price_KD").eq(field("max_base_price_ST"))))
+                .calcField("diff_price", not(field("price").eq(field("sum_price_ST"))))
+                .calcField("diff_vat", not(field("vat").eq(field("sum_vat_ST"))))
+                .calcField("diff_compens", not(field("sum_compens_KD").eq(field("sum_compens_ST"))))
+                .calcField("diff_tar_100", not(field("sum_tar_100_KD").eq(field("sum_tar_100_ST"))))
+                .calcField("diff_tar_50", not(field("sum_tar_50_KD").eq(field("sum_tar_50_ST"))))
+                .calcField("diff_red_code", not(field("max_red_code_KD").eq(field("max_red_code_ST"))))
+                .calcField("diff_red_value", not(field("red_value").eq(field("sum_red_value_ST"))))
+                .calcField("diff_red_perc", not(field("max_red_perc_KD").eq(field("max_red_perc_ST"))))
+                .calcField("diff_any", field("diff_base_price")
+                        .or(field("diff_price"))
+                        .or(field("diff_vat"))
+                        .or(field("diff_compens"))
+                        .or(field("diff_tar_100"))
+                        .or(field("diff_tar_50"))
+                        .or(field("diff_red_code"))
+                        .or(field("diff_red_value"))
+                        .or(field("diff_red_perc"))
                 )
                 .save(ctx.csvSaver, "cmp_kd_st_offer_items");
     }

@@ -27,18 +27,21 @@ public abstract class BaseScriptMaker implements CsvSaver {
     public void save(Csv csv, String name) {
         List<String> script = new ArrayList<>();
         for (Record record :  csv.getRecords()) {
-            HashMap<String, String> map = record.getMap();
-            String sql = sql();
-            for (String key : map.keySet()) {
-                sql = StringUtils.replace(sql, ":" + key, map.get(key));
-            }
-            script.addAll(Arrays.stream(StringUtils.splitPreserveAllTokens(sql, '\n'))
-                    .collect(Collectors.toList()));
+            script.addAll(prepareSql(record));
         }
         outFolder.mkdirs();
         File file = new File(outFolder, name + ".sql");
         FileUtils.writeLines(file, script);
         System.out.println("Saved " + file.getName() + ": " + csv.size());
+    }
+
+    protected List<String> prepareSql(Record record) {
+        HashMap<String, String> map = record.getMap();
+        String sql = sql();
+        for (String key : map.keySet()) {
+            sql = StringUtils.replace(sql, ":" + key, map.get(key));
+        }
+        return Arrays.stream(StringUtils.splitPreserveAllTokens(sql, '\n')).collect(Collectors.toList());
     }
 
     protected abstract String sql();
