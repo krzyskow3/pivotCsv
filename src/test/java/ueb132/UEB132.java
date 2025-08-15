@@ -129,7 +129,7 @@ public class UEB132 implements Runnable {
                         .mapField("count_kd", "count_id_KD")
                         .mapField("count_st", "count_id_ST")
                         .addFilter(ftField("diff").eq("true"))
-                        .addFilter(ftField("count_kd").eq("1"))
+                        .addFilter(ftField("count_kd").eq("1")) // <-- tu zakomentować
                         .addFilter(ftField("count_st").eq("1"))
                 )
                 .save(ctx.csvSaver, "script4")
