@@ -32,7 +32,7 @@ public abstract class BaseScriptMaker implements CsvSaver {
             for (String key : map.keySet()) {
                 sql = StringUtils.replace(sql, ":" + key, map.get(key));
             }
-            script.addAll(Arrays.stream(StringUtils.split(sql, '\n'))
+            script.addAll(Arrays.stream(StringUtils.splitPreserveAllTokens(sql, '\n'))
                     .collect(Collectors.toList()));
         }
         outFolder.mkdirs();

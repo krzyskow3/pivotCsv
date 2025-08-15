@@ -1,0 +1,15 @@
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9732387;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9752947;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9756118;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9768204;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9769756;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9777055;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9790583;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9791990;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9800521;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9801824;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9804288;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9820386;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9821042;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9828876;
+UPDATE sale_temporary SET oferta = 171 WHERE id = 9829243;
