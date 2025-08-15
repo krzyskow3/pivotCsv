@@ -7,6 +7,7 @@ import pl.pkpik.bilkom.pivotcsv.csv.Record;
 import java.time.LocalDate;
 
 import static pl.pkpik.bilkom.pivotcsv.functions.FunctionBuilder.field;
+import static pl.pkpik.bilkom.pivotcsv.functions.FunctionBuilder.fnCase;
 
 public class FunctionTest {
 
@@ -30,6 +31,20 @@ public class FunctionTest {
         Assert.assertEquals("true", f.getValue(rec1));
         Assert.assertEquals("false", f.getValue(rec2));
     }
+
+    @Test
+    public void testCaseWhenThenOrElse() {
+        Record rec = new Record()
+                .setValue("a", "2")
+                .setValue("b", "3")
+                .setValue("c", "4")
+                .setValue("d", "5");
+        Function f1 = fnCase(field("a").eq("2"), field("c"), field("d"));
+        Function f2 = fnCase(field("b").eq("2"), field("c"), field("d"));
+        Assert.assertEquals(4, f1.getIntValue(rec));
+        Assert.assertEquals(5, f2.getIntValue(rec));
+    }
+
 
     @Test
     public void testFloatFieldIn() {

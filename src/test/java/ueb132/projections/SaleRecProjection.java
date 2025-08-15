@@ -4,7 +4,7 @@ import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 
 import java.time.LocalDate;
 
-import static pl.pkpik.bilkom.pivotcsv.filters.FilterBuilder.field;
+import static pl.pkpik.bilkom.pivotcsv.filters.FilterBuilder.ftField;
 
 public class SaleRecProjection {
 
@@ -26,7 +26,7 @@ public class SaleRecProjection {
                 .mapField("red_code")
                 .mapField("red_value")
                 .mapField("red_perc")
-                .addFilter(field("op_day").between(fromDay, toDay));
+                .addFilter(ftField("op_day").between(fromDay, toDay));
     }
 
 }

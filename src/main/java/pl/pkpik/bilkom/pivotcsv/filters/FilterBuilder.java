@@ -15,7 +15,7 @@ public class FilterBuilder {
         this.field = field;
     }
 
-    public static FilterBuilder field(String field) {
+    public static FilterBuilder ftField(String field) {
         return new FilterBuilder(field);
     }
 

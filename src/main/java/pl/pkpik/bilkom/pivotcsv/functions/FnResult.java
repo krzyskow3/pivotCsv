@@ -4,6 +4,10 @@ import java.util.Stack;
 
 public class FnResult {
 
+    public FnResult() {
+//        System.out.println("=> result");
+    }
+
     private final Stack<String> stack = new Stack<>();
 
     public String pop() {

@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.dao.CsvData;
 import pl.pkpik.bilkom.pivotcsv.csv.printer.CsvPrettyPrinter;
+import pl.pkpik.bilkom.pivotcsv.functions.Function;
 import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 
 import java.io.File;
@@ -109,6 +110,14 @@ public class Csv {
         return merged;
     }
 
+    public Csv calcField(String field, Function function) {
+        fields.add(field);
+        for (Record record : records) {
+            record.setValue(field, function.getValue(record));
+        }
+        return this;
+    }
+
     public void addFields(List<String> fields) {
         this.fields.addAll(fields);
     }
@@ -125,6 +134,10 @@ public class Csv {
         this.headers.add(header);
     }
 
+    public List<String> prettyPrint() {
+        return new CsvPrettyPrinter(this).print();
+    }
+
     private static List<String> splitLine(String line, String separator) {
         return Arrays.stream(StringUtils.splitPreserveAllTokens(line, separator)).collect(Collectors.toList());
     }
@@ -136,10 +149,6 @@ public class Csv {
                 this.fields.add(field);
             }
         }
-    }
-
-    public List<String> prettyPrint() {
-        return new CsvPrettyPrinter(this).print();
     }
 
 }

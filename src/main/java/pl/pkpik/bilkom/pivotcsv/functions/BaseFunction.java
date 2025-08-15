@@ -33,12 +33,26 @@ public abstract class BaseFunction implements Function {
         return this;
     }
 
+    public static BaseFunction field(String field) { return new FnField(field); }
+
     public BaseFunction multiply(BaseFunction arg) {
         return new FnMultiply(arg.root()).link(this);
     }
 
     public BaseFunction add(BaseFunction arg) {
         return new FnAdd(arg.root()).link(this);
+    }
+
+    public BaseFunction eq(String value) {
+        return new FnEquals(new FnConst(value)).link(this);
+    }
+
+    public BaseFunction eq(BaseFunction arg) {
+        return new FnEquals(arg.root()).link(this);
+    }
+
+    public BaseFunction and(BaseFunction arg) {
+        return new FnAnd(arg.root()).link(this);
     }
 
     public BaseFunction in(String... values) {
@@ -61,7 +75,6 @@ public abstract class BaseFunction implements Function {
         return new FnEmpty().link(this);
     }
 
-
     @Override
     public String getValue(Record record, Param... params) {
         if (parent == null) {
@@ -81,6 +94,11 @@ public abstract class BaseFunction implements Function {
     @Override
     public boolean getBooleanValue(Record record, Param... params) {
         return "true".equalsIgnoreCase(getValue(record, params));
+    }
+
+    @Override
+    public int getIntValue(Record record, Param... params) {
+        return (int) Math.round(getFloatValue(record, params));
     }
 
     private void calculate(Record record, FnResult result, Param[] params) {
@@ -123,4 +141,5 @@ public abstract class BaseFunction implements Function {
         String[] split = StringUtils.split(getClass().getName(), '.');
         return split[split.length - 1];
     }
+
 }

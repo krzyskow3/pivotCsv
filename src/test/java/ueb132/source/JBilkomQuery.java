@@ -11,13 +11,13 @@ public interface JBilkomQuery {
             "nr_bil AS tck_number, " +
             "oferta AS offer_code, " +
             "cena_jedn AS base_price, " +
-            "abs(nalezn) AS price, " +
-            "abs(nalezn)-abs(ptu_kwota) AS vat, " +
+            "nalezn AS price, " +
+            "ptu_kwota AS vat, " +
             "odstepne_kwota AS compens, " +
             "tar_100 AS tar100, " +
             "tar_50 AS tar50, " +
             "red_code, " +
-            "abs(red_value) AS red_value, " +
+            "red_value AS red_value, " +
             "red_perc " +
             "FROM sale_temporary";
 
