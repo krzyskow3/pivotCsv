@@ -1,6 +1,7 @@
 package pl.pkpik.bilkom.pivotcsv.filters;
 
 import pl.pkpik.bilkom.pivotcsv.filters.impl.FtDayBetween;
+import pl.pkpik.bilkom.pivotcsv.filters.impl.FtEmpty;
 import pl.pkpik.bilkom.pivotcsv.filters.impl.FtNotEmpty;
 import pl.pkpik.bilkom.pivotcsv.filters.impl.FtValueIn;
 
@@ -22,6 +23,10 @@ public class FilterBuilder {
         return new FtValueIn(field, values);
     }
 
+    public Filter eq(String value) {
+        return new FtValueIn(field, value);
+    }
+
     public Filter between(LocalDate fromDay, LocalDate toDay) {
         return new FtDayBetween(field, fromDay, toDay);
     }
@@ -29,4 +34,9 @@ public class FilterBuilder {
     public Filter notEmpty() {
         return new FtNotEmpty(field);
     }
+
+    public Filter empty() {
+        return new FtEmpty(field);
+    }
+
 }

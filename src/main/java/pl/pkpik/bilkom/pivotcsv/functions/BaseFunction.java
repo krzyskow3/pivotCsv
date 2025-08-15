@@ -57,6 +57,11 @@ public abstract class BaseFunction implements Function {
         return new FnNotEmpty().link(this);
     }
 
+    public Function empty() {
+        return new FnEmpty().link(this);
+    }
+
+
     @Override
     public String getValue(Record record, Param... params) {
         if (parent == null) {

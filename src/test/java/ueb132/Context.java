@@ -10,6 +10,9 @@ import ueb132.projections.KdRetProjection;
 import ueb132.projections.KdSaleProjection;
 import ueb132.projections.SaleRecProjection;
 import ueb132.projections.SaleTmpProjection;
+import ueb132.scripts.Script1;
+import ueb132.scripts.Script2;
+import ueb132.scripts.Script3;
 import ueb132.source.JBilkomDbConnection;
 import ueb132.source.JBilkomQuery;
 
@@ -21,6 +24,7 @@ class Context implements JBilkomQuery {
 
     private static final File DATA_FOLDER = new File("src/test/resources");
     private static final File OUT_FOLDER = new File("target/out");
+    private static final File OUT_SCRIPT_FOLDER = new File("target/out/script");
     private static final LocalDate fromDay = LocalDate.of(2025, 8, 1);
     private static final LocalDate toDay = LocalDate.of(2025, 8, 13);
 
@@ -58,4 +62,17 @@ class Context implements JBilkomQuery {
                 .merge(saleRecCsv)
                 .save(csvSaver, "load_all");
     }
+
+    public CsvSaver script1() {
+        return new Script1(OUT_SCRIPT_FOLDER);
+    }
+
+    public CsvSaver script2() {
+        return new Script2(OUT_SCRIPT_FOLDER);
+    }
+
+    public CsvSaver script3() {
+        return new Script3(OUT_SCRIPT_FOLDER);
+    }
+
 }
