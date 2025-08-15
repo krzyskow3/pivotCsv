@@ -32,9 +32,9 @@ public class UEB132 implements Runnable {
         script2(selected, "161", "171");
         script3(selected, "16", "17");
         script3(selected, "161", "171");
-
         cmpKdSt1617(selected);
         cmpKdSt161171(selected);
+
         Csv cmpOfferItems = cmpKdStOfferItems(selected);
         script4(cmpOfferItems);
 
@@ -103,35 +103,37 @@ public class UEB132 implements Runnable {
 
     private void script4(Csv cmpOfferItems) {
         cmpOfferItems.projection(new Projection()
-                .mapField("id", "max_id_ST")
-                .mapField("tck_series")
-                .mapField("tck_number")
-                .mapField("op_type")
-                .mapField("diff_base_price")
-                .mapField("diff_price")
-                .mapField("diff_vat")
-                .mapField("diff_compens")
-                .mapField("diff_tar_100")
-                .mapField("diff_tar_50")
-                .mapField("diff_red_code")
-                .mapField("diff_red_value")
-                .mapField("diff_red_perc")
-                .mapField("base_price", "max_base_price_KD")
-                .mapField("price")
-                .mapField("vat")
-                .mapField("compens", "sum_compens_KD")
-                .mapField("tar_100", "sum_tar_100_KD")
-                .mapField("tar_50", "sum_tar_50_KD")
-                .mapField("red_code", "max_red_code_KD")
-                .mapField("red_value")
-                .mapField("red_perc", "max_red_perc_KD")
-                .mapField("diff", "diff_any")
-                .mapField("count_kd", "count_id_KD")
-                .mapField("count_st", "count_id_ST")
-                .addFilter(ftField("diff").eq("true"))
-                .addFilter(ftField("count_kd").eq("1"))
-                .addFilter(ftField("count_st").eq("1"))
-        ).save(ctx.csvSaver, "script4");
+                        .mapField("id", "max_id_ST")
+                        .mapField("tck_series")
+                        .mapField("tck_number")
+                        .mapField("op_type")
+                        .mapField("diff_base_price")
+                        .mapField("diff_price")
+                        .mapField("diff_vat")
+                        .mapField("diff_compens")
+                        .mapField("diff_tar_100")
+                        .mapField("diff_tar_50")
+                        .mapField("diff_red_code")
+                        .mapField("diff_red_value")
+                        .mapField("diff_red_perc")
+                        .mapField("base_price", "max_base_price_KD")
+                        .mapField("price")
+                        .mapField("vat")
+                        .mapField("compens", "sum_compens_KD")
+                        .mapField("tar_100", "sum_tar_100_KD")
+                        .mapField("tar_50", "sum_tar_50_KD")
+                        .mapField("red_code", "max_red_code_KD")
+                        .mapField("red_value")
+                        .mapField("red_perc", "max_red_perc_KD")
+                        .mapField("diff", "diff_any")
+                        .mapField("count_kd", "count_id_KD")
+                        .mapField("count_st", "count_id_ST")
+                        .addFilter(ftField("diff").eq("true"))
+                        .addFilter(ftField("count_kd").eq("1"))
+                        .addFilter(ftField("count_st").eq("1"))
+                )
+                .save(ctx.csvSaver, "script4")
+                .save(ctx.script4(), "script4");
     }
 
     private Csv selectKdStTickets(Csv all) {

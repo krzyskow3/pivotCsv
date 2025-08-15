@@ -13,6 +13,7 @@ import ueb132.projections.SaleTmpProjection;
 import ueb132.scripts.Script1;
 import ueb132.scripts.Script2;
 import ueb132.scripts.Script3;
+import ueb132.scripts.Script4;
 import ueb132.source.JBilkomDbConnection;
 import ueb132.source.JBilkomQuery;
 
@@ -73,6 +74,10 @@ class Context implements JBilkomQuery {
 
     public CsvSaver script3() {
         return new Script3(OUT_SCRIPT_FOLDER);
+    }
+
+    public CsvSaver script4() {
+        return new Script4(OUT_SCRIPT_FOLDER);
     }
 
 }
