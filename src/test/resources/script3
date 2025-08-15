@@ -1,0 +1,7 @@
+INSERT INTO sale_temporary(id, bus, cena_jedn, czas_sp, data_sp, data_zwrotu, home_co,ident,jedn_sl, kasa, kat_poc, klasa, miesiac_r, nalezn, nr_bil, nr_bil_pierw, nr_bil_wym, obow_do, obow_od,
+    odl_pier_odc, odleg, odstepne_kwota, oferta, other_co, ptu_kwota, ptu_stawka, rec_id, rec_typ, red_code, red_perc, red_value, rodz_sprzed, rok,seria, seria_bil_pierw, seria_wym, sp_prac, stac_do, stac_od,
+    stac_zm_tar, stacja_1, stacja_2, status, carrier_code, tar_100, tar_50, uzyt, wsk_druk, wzor_bil, zmiana, stac_p1, stac_p2, stac_p3, stac_p4, nr_poc1, nr_poc2, nr_poc3, nr_poc4)
+  SELECT nextval('sale_temporary_pk_sq'::regclass), bus, 1960, czas_sp, data_sp, data_zwrotu, home_co,ident,jedn_sl, kasa, kat_poc, klasa, miesiac_r, 1960, nr_bil, nr_bil_pierw, nr_bil_wym, obow_do, obow_od,
+    odl_pier_odc, odleg, 0, 17, other_co, 145, ptu_stawka, rec_id, rec_typ, 1, 0, 0, rodz_sprzed, rok,seria, seria_bil_pierw, seria_wym, sp_prac, stac_do, stac_od,
+    stac_zm_tar, stacja_1, stacja_2, status, carrier_code, 1, 0, uzyt, wsk_druk, wzor_bil, zmiana, stac_p1, stac_p2, stac_p3, stac_p4, nr_poc1, nr_poc2, nr_poc3, nr_poc4
+  FROM sale_temporary WHERE id = 9666868 AND seria = 'GS' AND nr_bil = 10252111;
