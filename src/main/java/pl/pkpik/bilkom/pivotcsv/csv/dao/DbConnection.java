@@ -1,10 +1,9 @@
-package pl.pkpik.bilkom.pivotcsv.csv.db;
+package pl.pkpik.bilkom.pivotcsv.csv.dao;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import pl.pkpik.bilkom.pivotcsv.csv.Csv;
 
-import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +12,6 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class DbConnection {
-
-    public static final DbConnection BILKOM = new DbConnection(
-            "org.postgresql.Driver",
-            "jdbc:postgresql://localhost:5432/jbilkom",
-            "postgres",
-            "postgres");
 
     private final String driver;
     private final String url;
@@ -54,14 +47,6 @@ public class DbConnection {
         String value = rs.getString(field);
         boolean isNull = (value == null) || "null".equals(value);
         return isNull ? "<NULL>" : value;
-    }
-
-    private static final File OUT_FOLDER = new File("target/out");
-
-    @SneakyThrows
-    public static void main(String[] args) {
-        Csv csv = BILKOM.executeQuery("SELECT * FROM sale_temporary");
-        csv.save(new File(OUT_FOLDER,"db_sale_temporary.csv"));
     }
 
 }

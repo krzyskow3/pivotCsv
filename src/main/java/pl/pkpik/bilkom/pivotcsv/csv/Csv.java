@@ -1,21 +1,17 @@
 package pl.pkpik.bilkom.pivotcsv.csv;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import pl.pkpik.bilkom.pivotcsv.csv.printer.CsvPrettyPrinter;
 import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 
 public class Csv {
-
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private static final String DEFAULT_SEPARATOR = ";";
     private static final String DEFAULT_HEADER_PREFIX = "#";
@@ -42,11 +38,12 @@ public class Csv {
         return create(new ArrayList<>(), new ArrayList<>(fields), records);
     }
 
-    public static Csv load(File file) throws IOException {
+    public static Csv load(File file) {
         return load(file, DEFAULT_SEPARATOR, DEFAULT_HEADER_PREFIX);
     }
 
-    public static Csv load(File file, String separator, String headerPrefix) throws IOException {
+    @SneakyThrows
+    public static Csv load(File file, String separator, String headerPrefix) {
         Csv csv = new Csv();
         List<String> lines = FileUtils.readLines(file, "UTF-8");
         for (String line : lines) {
@@ -68,11 +65,17 @@ public class Csv {
         return csv;
     }
 
-    public Csv save(File file) throws IOException {
+    public Csv save(CsvSaver csvSaver, String name) {
+        csvSaver.save(this, name);
+        return this;
+    }
+
+    public Csv save(File file) {
         return save(file, DEFAULT_SEPARATOR, DEFAULT_HEADER_PREFIX);
     }
 
-    public Csv save(File file, String separator, String headerPrefix) throws IOException {
+    @SneakyThrows
+    public Csv save(File file, String separator, String headerPrefix) {
         List<String> lines = new ArrayList<>();
         if (!headers.isEmpty()) {
             headers.forEach(header -> lines.add(headerPrefix + header.toCsv(separator)));
@@ -134,13 +137,13 @@ public class Csv {
         }
     }
 
-    public Csv saveAsJson(File file) throws IOException {
-        List<Map<String, String>> data = new ArrayList<>();
-        records.forEach(rec -> data.add(rec.getMap()));
-        String json = GSON.toJson(data);
-        FileUtils.write(file, json, "UTF-8");
-        return this;
-    }
+//    public Csv saveAsJson(File file) throws IOException {
+//        List<Map<String, String>> data = new ArrayList<>();
+//        records.forEach(rec -> data.add(rec.getMap()));
+//        String json = GSON.toJson(data);
+//        FileUtils.write(file, json, "UTF-8");
+//        return this;
+//    }
 
     public List<String> prettyPrint() {
         return new CsvPrettyPrinter(this).print();
