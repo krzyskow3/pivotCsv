@@ -24,7 +24,7 @@ public class DbConnection {
         try (Connection con = DriverManager.getConnection(url, username, password)) {
             try (Statement stmt = con.createStatement()) {
                 try (ResultSet resultSet = stmt.executeQuery(selectSql)) {
-                    List<Map<String, Object>> records = new ArrayList<>();
+                    CsvData csvData = new CsvData();
                     ResultSetMetaData metaData = resultSet.getMetaData();
                     List<String> fields = new ArrayList<>();
                     for (int i = 1; i <= metaData.getColumnCount(); i++) {
@@ -32,18 +32,18 @@ public class DbConnection {
                         fields.add(columnName);
                     }
                     while (resultSet.next()) {
-                        Map<String, Object> record = fields.stream()
-                                .collect(Collectors.toMap(field -> field, field ->  getValue(resultSet, field)));
-                        records.add(record);
+                        Map<String, String> record = fields.stream()
+                                .collect(Collectors.toMap(field -> field, field -> getValue(resultSet, field)));
+                        csvData.addRecord(record);
                     }
-                    return Csv.create(records);
+                    return Csv.create(csvData);
                 }
             }
         }
     }
 
     @SneakyThrows
-    private Object getValue(ResultSet rs, String field) {
+    private String getValue(ResultSet rs, String field) {
         String value = rs.getString(field);
         boolean isNull = (value == null) || "null".equals(value);
         return isNull ? "<NULL>" : value;

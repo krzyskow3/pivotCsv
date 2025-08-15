@@ -3,6 +3,7 @@ package pl.pkpik.bilkom.pivotcsv.csv;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import pl.pkpik.bilkom.pivotcsv.csv.dao.CsvData;
 import pl.pkpik.bilkom.pivotcsv.csv.printer.CsvPrettyPrinter;
 import pl.pkpik.bilkom.pivotcsv.projection.Projection;
 
@@ -28,10 +29,10 @@ public class Csv {
         return csv;
     }
 
-    public static Csv create(List<Map<String, Object>> data) {
+    public static Csv create(CsvData data) {
         Set<String> fields = new HashSet<>();
         List<Record> records = new ArrayList<>();
-        for (Map<String, Object> rec : data) {
+        for (Map<String, String> rec : data) {
             fields.addAll(rec.keySet());
             records.add(Record.create(rec));
         }
@@ -137,15 +138,11 @@ public class Csv {
         }
     }
 
-//    public Csv saveAsJson(File file) throws IOException {
-//        List<Map<String, String>> data = new ArrayList<>();
-//        records.forEach(rec -> data.add(rec.getMap()));
-//        String json = GSON.toJson(data);
-//        FileUtils.write(file, json, "UTF-8");
-//        return this;
-//    }
-
     public List<String> prettyPrint() {
         return new CsvPrettyPrinter(this).print();
     }
+
+
+
+
 }

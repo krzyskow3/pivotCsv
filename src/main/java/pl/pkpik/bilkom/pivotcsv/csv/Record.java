@@ -25,14 +25,12 @@ public class Record {
         return record;
     }
 
-    public static Record create(Map<String, Object> rec) {
+    public static Record create(Map<String, String> rec) {
         List<String> fields = new ArrayList<>();
         List<String> values = new ArrayList<>();
         for (String key : rec.keySet()) {
             fields.add(key);
-            Object value = rec.get(key);
-
-            values.add(value == null ? null : value.toString());
+            values.add(rec.get(key));
         }
         return Record.create(fields, values);
     }
