@@ -33,6 +33,7 @@ class Context implements JBilkomQuery {
     public final CsvLoader kdSaleFile;
     public final CsvLoader kdRetFile;
     public final CsvLoader saleTmpDb;
+    public final CsvLoader saleRecDb;
     public final CsvLoader saleTmpJson;
     public final CsvLoader saleRecJson;
 
@@ -41,22 +42,24 @@ class Context implements JBilkomQuery {
         Projection kdRetPr = KdRetProjection.create(fromDay, toDay);
         Projection saleTmpPr = SaleTmpProjection.create(fromDay, toDay);
         Projection saleRecPr = SaleRecProjection.create(fromDay, toDay);
-        DbConnection jBilkom = JBilkomDbConnection.create();
+        DbConnection jBilkom = JBilkomDbConnection.createProd();
         CsvSaver csvSaver = new FileCsvSaver(OUT_FOLDER);
         CsvLoader kdSaleFile = new FileCsvLoader(DATA_FOLDER, "kd_sale", kdSalePr);
         CsvLoader kdRetFile = new FileCsvLoader(DATA_FOLDER, "kd_ret", kdRetPr);
-        CsvLoader saleTmpDb = new DbCsvLoader(jBilkom, SELECT_SALE_TEMPORARY, saleTmpPr);
+        CsvLoader saleTmpDb = new DbCsvLoader(jBilkom, saleTmpPr, applySqlParams(SELECT_SALE_TEMPORARY, fromDay, toDay));
+        CsvLoader saleRecDb = new DbCsvLoader(jBilkom, saleRecPr, applySqlParams(SELECT_SALE_RECORDS, fromDay, toDay));
         CsvLoader saleTmpJson = new JsonCsvLoader(DATA_FOLDER, "sale_temporary", saleTmpPr);
         CsvLoader saleRecJson = new JsonCsvLoader(DATA_FOLDER, "sale_records", saleRecPr);
-        return new Context(csvSaver, kdSaleFile, kdRetFile, saleTmpDb, saleTmpJson, saleRecJson);
+        return new Context(csvSaver, kdSaleFile, kdRetFile, saleTmpDb, saleRecDb, saleTmpJson, saleRecJson);
     }
 
     public Csv loadData() {
         Csv kdSaleCsv = kdSaleFile.load().save(csvSaver, "load_kd_sale");
         Csv kdRetCsv = kdRetFile.load().save(csvSaver, "load_kd_ret");
         Csv saleTmpCsv = saleTmpDb.load().save(csvSaver, "load_sale_tmp_db");
+        Csv saleRecCsv = saleRecDb.load().save(csvSaver, "load_sale_rec_db");
 //        Csv saleTmpCsv = saleTmpJson.load().save(csvSaver, "load_sale_tmp_json");
-        Csv saleRecCsv = saleRecJson.load().save(csvSaver, "load_sale_rec");
+//        Csv saleRecCsv = saleRecJson.load().save(csvSaver, "load_sale_rec");
         return kdSaleCsv
                 .merge(kdRetCsv)
                 .merge(saleTmpCsv)
@@ -78,6 +81,13 @@ class Context implements JBilkomQuery {
 
     public CsvSaver script4() {
         return new Script4(OUT_SCRIPT_FOLDER);
+    }
+
+    private static String applySqlParams(String query, Object... params) {
+        for (int i = 0; i < params.length; i++) {
+            query = query.replace("?" + (i + 1), params[i].toString());
+        }
+        return query;
     }
 
 }

@@ -9,7 +9,15 @@ public class JBilkomDbConnection {
     private static final String USER = "postgres";
     private static final String PASS = "postgres";
 
+    private static final String PROD_URL = "jdbc:postgresql://10.32.223.145:5432/jBilkom";
+    private static final String PROD_USER = "odczyt";
+    private static final String PROD_PASS = "******";
+
     public static DbConnection create() {
         return new DbConnection(DRIVER, URL, USER, PASS);
     }
+
+    public static DbConnection createProd() {
+        return new DbConnection(DRIVER, PROD_URL, PROD_USER, PROD_PASS);   }
+
 }

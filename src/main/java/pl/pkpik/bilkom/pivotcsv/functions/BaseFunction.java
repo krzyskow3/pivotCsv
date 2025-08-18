@@ -53,6 +53,10 @@ public abstract class BaseFunction implements Function {
         return new FnAdd(arg.root()).link(this);
     }
 
+    public BaseFunction subtract(BaseFunction arg) {
+        return new FnSubtract(arg.root()).link(this);
+    }
+
     public BaseFunction eq(String value) {
         return new FnEquals(new FnConst(value)).link(this);
     }

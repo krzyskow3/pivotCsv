@@ -34,7 +34,6 @@ public class UEB132 implements Runnable {
         script3(selected, "161", "171");
         cmpKdSt1617(selected);
         cmpKdSt161171(selected);
-
         Csv cmpOfferItems = cmpKdStOfferItems(selected);
         script4(cmpOfferItems);
 
